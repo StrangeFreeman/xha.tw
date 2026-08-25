@@ -53,11 +53,16 @@ To enable Shlink later, create the runtime files:
 ```sh
 cd /opt/xha-stack
 cp .env.example .env
-mkdir -p secrets /srv/xha.tw
+install -d -m 700 secrets
+mkdir -p /srv/xha.tw
 openssl rand -base64 36 > secrets/postgres_password.txt
-chmod 600 .env secrets/postgres_password.txt
+chmod 600 .env
+chmod 644 secrets/postgres_password.txt
 docker compose --profile shlink up -d
 ```
+
+The `secrets` directory remains accessible only to root on the VPS. The password file itself must be
+readable by the non-root users inside both the Shlink and PostgreSQL containers when Compose bind-mounts it.
 
 Before starting the stack, edit `.env` and provide a MaxMind GeoLite2 license key. DNS records for
 `xha.tw`, `www.xha.tw`, and `go.xha.tw` must point to the VPS. Only ports 22, 80, and 443 need to be

@@ -1,0 +1,22 @@
+www.xha.tw {
+	redir https://xha.tw{uri} permanent
+}
+
+xha.tw {
+	encode zstd gzip
+	root * /srv/blog
+
+	try_files {path}.html {path}/index.html {path}
+	file_server
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		X-Frame-Options SAMEORIGIN
+	}
+}
+
+go.xha.tw {
+	encode zstd gzip
+	reverse_proxy shlink:8080
+}

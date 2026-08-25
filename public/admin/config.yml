@@ -1,0 +1,185 @@
+backend:
+  name: github
+  repo: StrangeFreeman/xha.tw
+  branch: main
+  base_url: https://auth.xha.tw
+  auth_endpoint: auth
+  site_domain: xha.tw
+  squash_merges: true
+
+publish_mode: editorial_workflow
+site_url: https://xha.tw
+display_url: https://xha.tw
+show_preview_links: false
+local_backend: true
+
+slug:
+  encoding: unicode
+  clean_accents: true
+  sanitize_replacement: '-'
+
+# Collection-specific media settings keep images beside each Markdown entry.
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: blog
+    label: 文章
+    label_singular: 文章
+    description: 一般 Markdown 文章；含 Pure 元件的 MDX 請繼續透過 Git 編輯。
+    folder: src/content/blog
+    create: true
+    extension: md
+    format: frontmatter
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    identifier_field: title
+    summary: '{{title}} — {{publishDate}}'
+    sortable_fields: [publishDate, updatedDate, title]
+    view_filters:
+      - label: 草稿
+        field: draft
+        pattern: 'true'
+      - label: 已發布
+        field: draft
+        pattern: 'false'
+    fields:
+      - label: 標題
+        name: title
+        widget: string
+        hint: 最多 60 個字元。
+        pattern: ['^.{1,60}$', 標題不可超過 60 個字元]
+      - label: 摘要
+        name: description
+        widget: text
+        hint: 最多 160 個字元，用於文章列表與 SEO。
+        pattern: ['^.{1,160}$', 摘要不可超過 160 個字元]
+      - label: 發布日期
+        name: publishDate
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
+      - label: 更新日期
+        name: updatedDate
+        widget: datetime
+        required: false
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
+      - label: 封面圖片
+        name: heroImage
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - label: 圖片
+            name: src
+            widget: image
+            choose_url: false
+            media_library:
+              config:
+                max_file_size: 5242880
+          - label: 替代文字
+            name: alt
+            widget: string
+            required: false
+          - label: 主題色
+            name: color
+            widget: string
+            required: false
+            hint: 選填，例如 #659EB9。
+            pattern: ['^#[0-9a-fA-F]{6}$', 請輸入六位十六進位色碼]
+      - label: 標籤
+        name: tags
+        widget: list
+        required: false
+        default: []
+        allow_add: true
+        field:
+          label: 標籤
+          name: tag
+          widget: string
+      - label: 語言
+        name: language
+        widget: select
+        required: false
+        default: zh-TW
+        options:
+          - { label: 繁體中文, value: zh-TW }
+          - { label: English, value: en }
+          - { label: 日本語, value: ja }
+      - label: 草稿
+        name: draft
+        widget: boolean
+        default: true
+        hint: 關閉後，合併 Pull Request 才會在網站公開。
+      - label: 開放留言
+        name: comment
+        widget: boolean
+        default: true
+      - label: 內文
+        name: body
+        widget: markdown
+
+  - name: docs
+    label: 文件
+    label_singular: 文件
+    description: 一般 Markdown 文件；複雜 MDX 文件請繼續透過 Git 編輯。
+    folder: src/content/docs
+    create: true
+    extension: md
+    format: frontmatter
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    identifier_field: title
+    summary: '{{title}}'
+    sortable_fields: [order, updatedDate, title]
+    fields:
+      - label: 標題
+        name: title
+        widget: string
+        pattern: ['^.{1,60}$', 標題不可超過 60 個字元]
+      - label: 摘要
+        name: description
+        widget: text
+        pattern: ['^.{1,160}$', 摘要不可超過 160 個字元]
+      - label: 發布日期
+        name: publishDate
+        widget: datetime
+        required: false
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
+      - label: 更新日期
+        name: updatedDate
+        widget: datetime
+        required: false
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
+      - label: 標籤
+        name: tags
+        widget: list
+        required: false
+        default: []
+        allow_add: true
+        field:
+          label: 標籤
+          name: tag
+          widget: string
+      - label: 排序
+        name: order
+        widget: number
+        value_type: int
+        min: 0
+        default: 999
+      - label: 草稿
+        name: draft
+        widget: boolean
+        default: true
+      - label: 內文
+        name: body
+        widget: markdown

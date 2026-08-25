@@ -31,6 +31,8 @@ node_modules/
 # environment variables
 .env
 .env.production
+deploy/.env
+deploy/secrets/*.txt
 
 ### Custom ###
 .DS_Store

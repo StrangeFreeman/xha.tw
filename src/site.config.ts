@@ -5,9 +5,9 @@ export const theme: ThemeUserConfig = {
   /** Title for your website. Will be used in metadata and as browser tab title. */
   title: 'xha.tw',
   /** Will be used in index page & copyright declaration */
-  author: 'StrangeFreeman',
+  author: 'xhA',
   /** Description metadata for your website. Can be used in page metadata. */
-  description: 'StrangeFreeman 的個人網站與技術筆記',
+  description: 'xhA 的個人網站與技術筆記',
   /** The default favicon for your site which should be a path to an image in the `public/` directory. */
   favicon: '/favicon/favicon.ico',
   /** The default social card image for your site which should be a path to an image in the `public/` directory. */
@@ -28,7 +28,7 @@ export const theme: ThemeUserConfig = {
   /** Set a logo image to show in the homepage. */
   logo: {
     src: '/src/assets/avatar.png',
-    alt: 'StrangeFreeman'
+    alt: 'xhA'
   },
 
   titleDelimiter: '•',
@@ -49,11 +49,11 @@ export const theme: ThemeUserConfig = {
   /** Configure the header of your site. */
   header: {
     menu: [
-      { title: '文章', link: '/blog' },
-      { title: '文件', link: '/docs' },
-      { title: '專案', link: '/projects' },
-      { title: '連結', link: '/links' },
-      { title: '關於', link: '/about' }
+      { title: 'Blog', link: '/blog' },
+      { title: 'Docs', link: '/docs' },
+      { title: 'Projects', link: '/projects' },
+      { title: 'Links', link: '/links' },
+      { title: 'About', link: '/about' }
     ]
   },
 

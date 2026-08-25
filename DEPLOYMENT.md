@@ -33,6 +33,10 @@ The deployment user must be able to write to `/srv/xha.tw`. Do not use `root` fo
 
 ## VPS preparation
 
+For a small VPS, do not clone or build the Astro project on the server. Build in GitHub Actions or
+locally and transfer only `dist/` plus the files under `deploy/`. Docker logs are rotated at 10 MB
+with three files per service to prevent unbounded disk growth.
+
 Copy the `deploy/` directory to `/opt/xha-stack`. The main static website can be started without
 Shlink:
 

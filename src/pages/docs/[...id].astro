@@ -1,13 +1,12 @@
 ---
-import { type CollectionEntry, render } from 'astro:content'
+import { render, type CollectionEntry } from 'astro:content'
 
 import { MediumZoom } from 'astro-pure/advanced'
 import { TOC } from 'astro-pure/components/pages'
 import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
 import { Button } from 'astro-pure/user'
 import PageLayout from '@/layouts/ContentLayout.astro'
-
-import DocsContents from './DocsContents.astro'
+import DocsContents from '@/components/docs/DocsContents.astro'
 
 export const prerender = true
 
@@ -27,7 +26,7 @@ const { post } = Astro.props
 const { Content, headings } = await render(post)
 const { description, title } = post.data
 
-const editPath = `https://github.com/cworld1/astro-theme-pure/edit/main/${post.filePath}`
+const editPath = `https://github.com/StrangeFreeman/xha.tw/edit/main/${post.filePath}`
 ---
 
 <PageLayout meta={{ description, title }} back='/docs'>

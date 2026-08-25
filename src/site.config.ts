@@ -40,7 +40,6 @@ export const theme: ThemeUserConfig = {
     /* Telegram channel */
     // {
     //   tag: 'meta',
-    //   attrs: { name: 'telegram:channel', content: '@cworld0_cn' },
     //   content: ''
     // }
   ],

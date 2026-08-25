@@ -20,13 +20,17 @@ services:
     logging: *default-logging
 
   shlink:
-    image: shlinkio/shlink:stable
+    image: shlinkio/shlink:5.1.5
     profiles: [shlink]
     restart: unless-stopped
     environment:
       DEFAULT_DOMAIN: go.xha.tw
       IS_HTTPS_ENABLED: 'true'
       GEOLITE_LICENSE_KEY: ${GEOLITE_LICENSE_KEY}
+      TIMEZONE: Asia/Taipei
+      ANONYMIZE_REMOTE_ADDR: 'true'
+      CORS_ALLOW_ORIGIN: https://app.shlink.io
+      DEFAULT_BASE_URL_REDIRECT: https://xha.tw
       DB_DRIVER: postgres
       DB_HOST: postgres
       DB_PORT: '5432'

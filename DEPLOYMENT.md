@@ -61,7 +61,8 @@ docker compose --profile shlink up -d
 
 Before starting the stack, edit `.env` and provide a MaxMind GeoLite2 license key. DNS records for
 `xha.tw`, `www.xha.tw`, and `go.xha.tw` must point to the VPS. Only ports 22, 80, and 443 need to be
-publicly reachable.
+publicly reachable. Shlink is pinned to version 5.1.5 so upgrades and database migrations can be
+reviewed before changing versions.
 
 Generate the first Shlink API key after the services are healthy:
 
@@ -70,6 +71,8 @@ docker compose exec shlink shlink api-key:generate --name=web-client
 ```
 
 Store the generated key in a password manager. It must never be committed to this repository.
+Manage the server from `https://app.shlink.io/`, using `https://go.xha.tw` as the server URL. The
+hosted client runs in the browser, and the Shlink API only allows that origin through CORS.
 
 ## Local checks
 

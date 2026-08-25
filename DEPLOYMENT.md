@@ -52,16 +52,16 @@ To enable Shlink later, create the runtime files:
 
 ```sh
 cd /opt/xha-stack
+cp .env.example .env
 mkdir -p secrets /srv/xha.tw
 openssl rand -base64 36 > secrets/postgres_password.txt
-chmod 600 secrets/postgres_password.txt
+chmod 600 .env secrets/postgres_password.txt
 docker compose --profile shlink up -d
 ```
 
-This personal deployment disables IP tracking, so no MaxMind GeoLite2 license key is needed.
-Shlink still records visit counts, but it does not resolve visitor locations. DNS records for
-`xha.tw`, `www.xha.tw`, and `go.xha.tw` must point to the VPS. Only ports 22, 80, and 443 need to
-be publicly reachable.
+Before starting the stack, edit `.env` and provide a MaxMind GeoLite2 license key. DNS records for
+`xha.tw`, `www.xha.tw`, and `go.xha.tw` must point to the VPS. Only ports 22, 80, and 443 need to be
+publicly reachable.
 
 Generate the first Shlink API key after the services are healthy:
 

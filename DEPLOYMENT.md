@@ -17,15 +17,14 @@ CNAME  blog  StrangeFreeman.github.io
 ```
 
 The workflow builds once and deploys the same `dist/` artifact independently to GitHub Pages and
-the VPS. The VPS deployment is skipped until both `VPS_HOST` and `VPS_USER` repository environment
-variables exist.
+the VPS.
 
 ## GitHub production environment
 
 Create a `production` environment with:
 
-- Variable `VPS_HOST`: VPS IP address or SSH hostname
-- Variable `VPS_USER`: dedicated unprivileged deployment user
+- Secret `VPS_HOST`: VPS IP address or SSH hostname
+- Secret `VPS_USER`: dedicated unprivileged deployment user
 - Secret `VPS_SSH_KEY`: private Ed25519 deployment key
 - Secret `VPS_KNOWN_HOSTS`: verified SSH host-key line for the VPS
 

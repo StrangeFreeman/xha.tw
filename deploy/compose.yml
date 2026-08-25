@@ -26,7 +26,7 @@ services:
     environment:
       DEFAULT_DOMAIN: go.xha.tw
       IS_HTTPS_ENABLED: 'true'
-      GEOLITE_LICENSE_KEY: ${GEOLITE_LICENSE_KEY}
+      DISABLE_IP_TRACKING: 'true'
       DB_DRIVER: postgres
       DB_HOST: postgres
       DB_PORT: '5432'

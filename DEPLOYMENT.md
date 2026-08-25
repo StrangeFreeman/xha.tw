@@ -33,7 +33,18 @@ The deployment user must be able to write to `/srv/xha.tw`. Do not use `root` fo
 
 ## VPS preparation
 
-Copy the `deploy/` directory to `/opt/xha-stack`, then create the runtime files:
+Copy the `deploy/` directory to `/opt/xha-stack`. The main static website can be started without
+Shlink:
+
+```sh
+cd /opt/xha-stack
+docker compose up -d caddy
+```
+
+`https://xha.tw` and the `www` redirect will work immediately. `https://go.xha.tw` remains
+unavailable until the Shlink profile is enabled.
+
+To enable Shlink later, create the runtime files:
 
 ```sh
 cd /opt/xha-stack
@@ -41,7 +52,7 @@ cp .env.example .env
 mkdir -p secrets /srv/xha.tw
 openssl rand -base64 36 > secrets/postgres_password.txt
 chmod 600 .env secrets/postgres_password.txt
-docker compose up -d
+docker compose --profile shlink up -d
 ```
 
 Before starting the stack, edit `.env` and provide a MaxMind GeoLite2 license key. DNS records for
@@ -69,9 +80,9 @@ The output must contain `dist/index.html`, `dist/blog/index.html`, `dist/admin/i
 ## Decap CMS
 
 The CMS is a static admin application at `https://xha.tw/admin/`. It manages regular Markdown
-entries in `src/content/blog/` and `src/content/docs/`. New entries use an `index.md` file with
-images stored beside it. MDX files containing Astro or Pure component imports remain code-managed;
-do not convert them through the CMS Markdown editor.
+entries in `src/content/blog/`. New entries use an `index.md` file with images stored beside it.
+MDX files containing Astro or Pure component imports remain code-managed; do not convert them
+through the CMS Markdown editor.
 
 The CMS uses GitHub's editorial workflow. Saving a draft creates a CMS branch and pull request;
 publishing merges it into `main`, which triggers the same GitHub Actions deployment for the VPS and

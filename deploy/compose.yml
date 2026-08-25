@@ -11,11 +11,10 @@ services:
       - /srv/xha.tw:/srv/blog:ro
       - caddy_data:/data
       - caddy_config:/config
-    depends_on:
-      - shlink
 
   shlink:
     image: shlinkio/shlink:stable
+    profiles: [shlink]
     restart: unless-stopped
     environment:
       DEFAULT_DOMAIN: go.xha.tw
@@ -35,6 +34,7 @@ services:
 
   postgres:
     image: postgres:16-alpine
+    profiles: [shlink]
     restart: unless-stopped
     environment:
       POSTGRES_DB: shlink

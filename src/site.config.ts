@@ -74,7 +74,7 @@ export const theme: ThemeUserConfig = {
     credits: true,
     /** Optional details about the social media accounts for this site. */
     social: [
-      { icon: 'github', label: 'GitHub', href: 'https://github.com/StrangeFreeman/xha.tw' },
+      { icon: 'github', label: 'GitHub', href: 'https://github.com/StrangeFreeman' },
       { icon: 'rss', label: 'RSS', href: '/rss.xml' }
     ]
   },

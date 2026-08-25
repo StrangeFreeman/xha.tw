@@ -101,10 +101,18 @@ Homepage URL:               https://xha.tw/admin/
 Authorization callback URL: https://auth.xha.tw/callback
 ```
 
-Deploy a Decap-compatible OAuth proxy at `auth.xha.tw`, then store the GitHub OAuth client ID and
-client secret in that platform's encrypted secret storage. The proxy must allow both
-`https://xha.tw` and `https://blog.xha.tw` as browser origins. Decap documents the required `/auth`
-and `/callback` endpoints and links to compatible edge-worker implementations:
+The OAuth proxy is in `auth-worker/`. Deploy it with Wrangler after authenticating to Cloudflare:
+
+```sh
+bunx wrangler@4 secret put GITHUB_OAUTH_ID --config auth-worker/wrangler.toml
+bunx wrangler@4 secret put GITHUB_OAUTH_SECRET --config auth-worker/wrangler.toml
+bunx wrangler@4 deploy --config auth-worker/wrangler.toml
+```
+
+Enter the GitHub OAuth client ID and secret only when Wrangler prompts. They are encrypted Worker
+secrets and must never be committed. The Worker maps itself to `auth.xha.tw`, requests only the
+`public_repo` scope, and returns credentials only to `https://xha.tw` or `https://blog.xha.tw`.
+Decap documents the required `/auth` and `/callback` protocol here:
 
 - https://decapcms.org/docs/backends-overview/#using-github-with-an-oauth-proxy
 - https://decapcms.org/docs/external-oauth-clients/
@@ -112,8 +120,10 @@ and `/callback` endpoints and links to compatible edge-worker implementations:
 Using an edge worker for `auth.xha.tw` is preferred because CMS authentication remains independent
 of the VPS. Published pages never depend on the CMS or OAuth proxy at request time.
 
-Map `auth.xha.tw` to the worker as a custom domain. It must not point at the VPS unless the OAuth
-proxy is intentionally moved there.
+After deployment, `https://auth.xha.tw/` should say that the OAuth Worker is ready. Visiting
+`https://auth.xha.tw/auth?provider=github` should redirect to GitHub. Do not create a separate DNS
+record for `auth.xha.tw`; Wrangler configures it as the Worker's Cloudflare custom domain. It must
+not point at the VPS unless the OAuth proxy is intentionally moved there.
 
 The first CMS version manages regular `.md` content only. Site-wide TypeScript settings in
 `src/site.config.ts` and advanced `.mdx` entries remain code-managed so the CMS cannot accidentally

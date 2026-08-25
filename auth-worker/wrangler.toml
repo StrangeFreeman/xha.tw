@@ -1,0 +1,9 @@
+name = "xha-tw-auth"
+main = "src/index.ts"
+compatibility_date = "2026-08-25"
+workers_dev = false
+route = { pattern = "auth.xha.tw", zone_name = "xha.tw", custom_domain = true }
+
+[vars]
+ALLOWED_ORIGINS = "https://xha.tw,https://blog.xha.tw"
+GITHUB_SCOPE = "public_repo"

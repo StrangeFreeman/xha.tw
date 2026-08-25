@@ -10,7 +10,7 @@ order: 4
 
 Routing blogs format like `/blog/:year/:id`
 
-See [4.0.2-beta如何使文章链接中包含年份](https://github.com/cworld1/astro-theme-pure/discussions/37#discussioncomment-11905851).
+See the [discussion about including the year in article URLs](https://github.com/cworld1/astro-theme-pure/discussions/37#discussioncomment-11905851).
 
 ## Content
 
@@ -36,7 +36,7 @@ See [option server.allowedHosts doesn't take into account "true"](https://github
 
 ### Problem with `BUN_LINK_PKG`
 
-See [BUN_LINK_PKG 环境变量无法设置成功](https://github.com/cworld1/astro-theme-pure/issues/51)
+See [BUN_LINK_PKG 環境變數無法設定成功](https://github.com/cworld1/astro-theme-pure/issues/51)
 
 ### Build No "Exports" Main Defined
 

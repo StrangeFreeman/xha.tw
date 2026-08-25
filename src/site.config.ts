@@ -17,10 +17,11 @@ export const theme: ThemeUserConfig = {
     lang: 'zh-TW',
     attrs: 'zh_TW',
     // Date locale
-    dateLocale: 'zh-TW',
+    // Keep article dates in the same style as the Pure demo: May 10, 2025 / Jun 12, 2025.
+    dateLocale: 'en-US',
     dateOptions: {
       day: 'numeric',
-      month: 'long',
+      month: 'short',
       year: 'numeric'
     }
   },

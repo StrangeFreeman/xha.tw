@@ -18,20 +18,20 @@ const linkEditPage = 'https://github.com/StrangeFreeman/xha.tw/blob/main/public/
 ---
 
 <PageLayout title='Links' {headings} comment>
-  <p>They're sorted randomly.</p>
-  <h2 id='common-links'>Common Links</h2>
+  <p>連結會以隨機順序顯示。</p>
+  <h2 id='common-links'>友站連結</h2>
   <FriendList list={friends[0]} />
-  <Collapse title='Links with Bad Status'>
+  <Collapse title='暫時失效的連結'>
     <FriendList list={friends[1]} />
   </Collapse>
-  <Collapse title='Link History Book'>
+  <Collapse title='友鏈紀錄'>
     <Timeline events={linksConf.logbook} />
   </Collapse>
-  <h2 id='special-links'>Special Links</h2>
+  <h2 id='special-links'>特別連結</h2>
   <FriendList list={friends[2]} />
 
-  <h2 id='apply-links'>Apply Links</h2>
-  <p>本站信息（点击复制）The site information (click to copy)：</p>
+  <h2 id='apply-links'>申請友鏈</h2>
+  <p>本站資訊（點擊即可複製）：</p>
   <blockquote class='not-prose grid grid-cols-[auto_1fr] gap-x-2 break-words border-s-4 ps-4'>
     {
       linksConf.applyTip.map(({ name, val }) => {
@@ -49,17 +49,12 @@ const linkEditPage = 'https://github.com/StrangeFreeman/xha.tw/blob/main/public/
   </blockquote>
 
   <p>
-    可通过下方留言或 <a href={linkEditPage} target='_blank'>提交 PR</a> 申请友链。申请说明：<br />
-    Apply your link by leaving comment or <a href={linkEditPage} target='_blank'>Submitting a PR</a
-    >. Additional info:
+    可透過下方留言，或到 <a href={linkEditPage} target='_blank'>GitHub 提交 PR</a> 申請友鏈。申請條件：
   </p>
   <ul>
-    <li>推荐了本站 You've recommended our link on your website</li>
-    <li>站点活着且有正式域名 Make sure your site is alive with a formal domain</li>
-    <li>
-      至少五篇原创文章且最近一年更新过 At least 5 original articles and exists articles released in
-      recent year
-    </li>
-    <li>内容不违反国家法律 Content does not violate laws</li>
+    <li>已在你的網站加入本站連結</li>
+    <li>網站可正常瀏覽，並具有正式網域</li>
+    <li>至少有五篇原創文章，且最近一年仍有更新</li>
+    <li>內容合法且不含惡意程式</li>
   </ul>
 </PageLayout>

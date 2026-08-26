@@ -94,8 +94,8 @@ collections:
         fields: *page_fields
 
   - name: blog
-    label: 文章
-    label_singular: 文章
+    label: Blog
+    label_singular: Blog
     description: 一般 Markdown 文章；含 Pure 元件的 MDX 請繼續透過 Git 編輯。
     folder: src/content/blog
     create: true
@@ -228,8 +228,8 @@ collections:
       - { label: 內容, name: body, widget: markdown, required: false }
 
   - name: project_categories
-    label: 專案分類
-    label_singular: 專案分類
+    label: Projects 分類
+    label_singular: Projects 分類
     folder: src/content/project-categories
     create: true
     extension: yml
@@ -244,8 +244,8 @@ collections:
       - { label: 顯示, name: visible, widget: boolean, default: true }
 
   - name: projects
-    label: 專案
-    label_singular: 專案
+    label: Projects
+    label_singular: Project
     folder: src/content/projects
     create: true
     extension: yml
@@ -297,8 +297,8 @@ collections:
     fields: *basic_section_fields
 
   - name: link_groups
-    label: 連結群組
-    label_singular: 連結群組
+    label: Links 群組
+    label_singular: Links 群組
     folder: src/content/link-groups
     create: true
     extension: yml
@@ -314,8 +314,8 @@ collections:
       - { label: 預設收合, name: collapsed, widget: boolean, default: false }
 
   - name: links
-    label: 連結
-    label_singular: 連結
+    label: Links
+    label_singular: Link
     folder: src/content/links
     create: true
     extension: yml
@@ -363,8 +363,8 @@ collections:
       - { label: 內容, name: body, widget: markdown, required: false }
 
   - name: docs
-    label: 文件
-    label_singular: 文件
+    label: Docs
+    label_singular: Doc
     description: Docs 頁面預設停用；準備好內容後再到「頁面與導覽」開啟。
     folder: src/content/docs
     create: true

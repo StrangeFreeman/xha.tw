@@ -7,15 +7,16 @@ import { Comment, PageInfo } from '@/components/waline'
 
 interface Props {
   title: string
+  description?: string
   headings?: MarkdownHeading[]
   view?: boolean
   comment?: boolean
 }
 
-const { title, headings, view, comment: enableComment, ...props } = Astro.props
+const { title, description, headings, view, comment: enableComment, ...props } = Astro.props
 ---
 
-<PageLayout meta={{ title }} {...props}>
+<PageLayout meta={{ title, description }} {...props}>
   {headings?.length && <TOC headings={headings} slot='sidebar' />}
 
   <Fragment slot='header'>

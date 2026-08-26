@@ -1,19 +1,36 @@
 ---
+import { getCollection, render } from 'astro:content'
+import { cmsPage } from '@/cms-config'
+
 import PageLayout from '@/layouts/CommonPage.astro'
 
-const headings = [
-  { depth: 2, slug: 'hobbies', text: 'Hobbies' },
-  { depth: 2, slug: 'tools', text: 'Tools' },
-  { depth: 2, slug: 'social-networks', text: 'Social Networks' },
-  { depth: 2, slug: 'gossips', text: 'Gossips' },
-  { depth: 2, slug: 'about-blog', text: 'About Blog' }
-]
+if (!cmsPage.about.enabled) return Astro.redirect('/404')
+
+const sections = await Promise.all(
+  (await getCollection('aboutSections'))
+    .filter(({ data }) => data.visible)
+    .sort((a, b) => a.data.order - b.data.order)
+    .map(async (entry) => ({ entry, ...(await render(entry)) }))
+)
+const headings = sections.flatMap(({ entry, headings: nestedHeadings }) => [
+  { depth: 2, slug: entry.data.slug, text: entry.data.title },
+  ...nestedHeadings
+])
 ---
 
-<PageLayout title='About' {headings} comment>
-  <h2 id='hobbies'>Hobbies</h2>
-  <h2 id='tools'>Tools</h2>
-  <h2 id='social-networks'>Social Networks</h2>
-  <h2 id='gossips'>Gossips</h2>
-  <h2 id='about-blog'>About Blog</h2>
+<PageLayout
+  title={cmsPage.about.title}
+  description={cmsPage.about.description}
+  {headings}
+  view={cmsPage.about.view}
+  comment={cmsPage.about.comment}
+>
+  {
+    sections.map(({ entry, Content }) => (
+      <section>
+        <h2 id={entry.data.slug}>{entry.data.title}</h2>
+        <Content />
+      </section>
+    ))
+  }
 </PageLayout>

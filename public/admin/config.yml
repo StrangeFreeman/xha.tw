@@ -18,11 +18,81 @@ slug:
   clean_accents: true
   sanitize_replacement: '-'
 
-# Collection-specific media settings keep images beside each Markdown entry.
 media_folder: public/uploads
 public_folder: /uploads
 
 collections:
+  - name: settings
+    label: 網站設定
+    files:
+      - name: site
+        label: 基本資料
+        file: src/data/site.json
+        format: json
+        fields:
+          - { label: 網站名稱, name: title, widget: string }
+          - { label: 作者名稱, name: author, widget: string }
+          - { label: 網站說明, name: description, widget: text }
+          - { label: 所在位置, name: location, widget: string }
+          - { label: GitHub 標籤, name: githubLabel, widget: string }
+          - { label: GitHub 網址, name: githubUrl, widget: string }
+          - { label: 原始碼按鈕文字, name: sourceLabel, widget: string }
+          - { label: 原始碼網址, name: sourceUrl, widget: string }
+          - { label: 顯示原始碼按鈕, name: showSource, widget: boolean, default: true }
+          - label: 自訂頭像
+            name: avatarUrl
+            widget: image
+            required: false
+            hint: 留空時使用 repo 內建頭像。
+
+  - name: pages
+    label: 頁面與導覽
+    files:
+      - name: home
+        label: 首頁
+        file: src/data/pages/home.json
+        format: json
+        fields: &page_fields
+          - { label: 內部識別碼, name: key, widget: hidden }
+          - { label: 頁面標題, name: title, widget: string }
+          - { label: 導覽列名稱, name: navigationLabel, widget: string }
+          - { label: 固定路徑, name: path, widget: hidden }
+          - { label: 導覽順序, name: navigationOrder, widget: number, value_type: int }
+          - label: 啟用頁面
+            name: enabled
+            widget: boolean
+            default: true
+            hint: 關閉後頁面不會公開；首頁請保持啟用。
+          - { label: 顯示於導覽列, name: showInNavigation, widget: boolean, default: true }
+          - { label: 顯示瀏覽次數, name: view, widget: boolean, default: false }
+          - { label: 開放留言, name: comment, widget: boolean, default: false }
+          - { label: SEO 說明, name: description, widget: text, required: false }
+      - name: blog
+        label: Blog
+        file: src/data/pages/blog.json
+        format: json
+        fields: *page_fields
+      - name: docs
+        label: Docs
+        file: src/data/pages/docs.json
+        format: json
+        fields: *page_fields
+      - name: projects
+        label: Projects
+        file: src/data/pages/projects.json
+        format: json
+        fields: *page_fields
+      - name: links
+        label: Links
+        file: src/data/pages/links.json
+        format: json
+        fields: *page_fields
+      - name: about
+        label: About
+        file: src/data/pages/about.json
+        format: json
+        fields: *page_fields
+
   - name: blog
     label: 文章
     label_singular: 文章
@@ -38,22 +108,16 @@ collections:
     summary: '{{title}} — {{publishDate}}'
     sortable_fields: [publishDate, updatedDate, title]
     view_filters:
-      - label: 草稿
-        field: draft
-        pattern: 'true'
-      - label: 已發布
-        field: draft
-        pattern: 'false'
+      - { label: 草稿, field: draft, pattern: 'true' }
+      - { label: 已發布, field: draft, pattern: 'false' }
     fields:
       - label: 標題
         name: title
         widget: string
-        hint: 最多 60 個字元。
         pattern: ['^.{1,60}$', 標題不可超過 60 個字元]
       - label: 摘要
         name: description
         widget: text
-        hint: 最多 160 個字元，用於文章列表與 SEO。
         pattern: ['^.{1,160}$', 摘要不可超過 160 個字元]
       - label: 發布日期
         name: publishDate
@@ -81,26 +145,18 @@ collections:
             media_library:
               config:
                 max_file_size: 5242880
-          - label: 替代文字
-            name: alt
-            widget: string
-            required: false
+          - { label: 替代文字, name: alt, widget: string, required: false }
           - label: 主題色
             name: color
             widget: string
             required: false
-            hint: 選填，例如 #659EB9。
             pattern: ['^#[0-9a-fA-F]{6}$', 請輸入六位十六進位色碼]
       - label: 標籤
         name: tags
         widget: list
         required: false
         default: []
-        allow_add: true
-        field:
-          label: 標籤
-          name: tag
-          widget: string
+        field: { label: 標籤, name: tag, widget: string }
       - label: 語言
         name: language
         widget: select
@@ -110,15 +166,230 @@ collections:
           - { label: 繁體中文, value: zh-TW }
           - { label: English, value: en }
           - { label: 日本語, value: ja }
-      - label: 草稿
-        name: draft
-        widget: boolean
-        default: true
-        hint: 關閉後，合併 Pull Request 才會在網站公開。
-      - label: 開放留言
-        name: comment
-        widget: boolean
-        default: true
-      - label: 內文
-        name: body
-        widget: markdown
+      - { label: 草稿, name: draft, widget: boolean, default: true }
+      - { label: 開放留言, name: comment, widget: boolean, default: true }
+      - { label: 內文, name: body, widget: markdown }
+
+  - name: home_sections
+    label: 首頁區塊
+    label_singular: 首頁區塊
+    folder: src/content/sections/home
+    create: true
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{title}} — 順序 {{order}}'
+    sortable_fields: [order, title]
+    view_filters:
+      - { label: 顯示中, field: visible, pattern: 'true' }
+      - { label: 已隱藏, field: visible, pattern: 'false' }
+    fields:
+      - { label: 標題, name: title, widget: string }
+      - label: URL 識別碼
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 只能使用小寫英文字母、數字與連字號]
+      - { label: 順序, name: order, widget: number, value_type: int, default: 0 }
+      - { label: 顯示, name: visible, widget: boolean, default: true }
+      - label: 區塊類型
+        name: kind
+        widget: select
+        default: markdown
+        options:
+          - { label: 一般內容, value: markdown }
+          - { label: 最新文章, value: latest-posts }
+      - { label: 最新文章數量, name: postLimit, widget: number, value_type: int, required: false }
+      - { label: 按鈕文字, name: buttonLabel, widget: string, required: false }
+      - { label: 按鈕網址, name: buttonUrl, widget: string, required: false }
+      - { label: 內容, name: body, widget: markdown, required: false }
+
+  - name: about_sections
+    label: About 區塊
+    label_singular: About 區塊
+    folder: src/content/sections/about
+    create: true
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    sortable_fields: [order, title]
+    view_filters:
+      - { label: 顯示中, field: visible, pattern: 'true' }
+      - { label: 已隱藏, field: visible, pattern: 'false' }
+    fields: &basic_section_fields
+      - { label: 標題, name: title, widget: string }
+      - label: URL 識別碼
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 只能使用小寫英文字母、數字與連字號]
+      - { label: 順序, name: order, widget: number, value_type: int, default: 0 }
+      - { label: 顯示, name: visible, widget: boolean, default: true }
+      - { label: 內容, name: body, widget: markdown, required: false }
+
+  - name: project_categories
+    label: 專案分類
+    label_singular: 專案分類
+    folder: src/content/project-categories
+    create: true
+    extension: yml
+    format: yaml
+    slug: '{{slug}}'
+    identifier_field: title
+    sortable_fields: [order, title]
+    fields:
+      - { label: 分類名稱, name: title, widget: string }
+      - { label: 分類說明, name: description, widget: text, required: false }
+      - { label: 順序, name: order, widget: number, value_type: int, default: 0 }
+      - { label: 顯示, name: visible, widget: boolean, default: true }
+
+  - name: projects
+    label: 專案
+    label_singular: 專案
+    folder: src/content/projects
+    create: true
+    extension: yml
+    format: yaml
+    slug: '{{slug}}'
+    identifier_field: name
+    sortable_fields: [order, name]
+    view_filters:
+      - { label: 顯示中, field: visible, pattern: 'true' }
+      - { label: 已隱藏, field: visible, pattern: 'false' }
+    fields:
+      - { label: 名稱, name: name, widget: string }
+      - { label: 說明, name: description, widget: text }
+      - label: 分類
+        name: category
+        widget: relation
+        collection: project_categories
+        search_fields: [title]
+        value_field: '{{slug}}'
+        display_fields: [title]
+      - { label: 圖片, name: image, widget: image, required: false }
+      - { label: 順序, name: order, widget: number, value_type: int, default: 0 }
+      - { label: 顯示, name: visible, widget: boolean, default: true }
+      - label: 相關連結
+        name: links
+        widget: list
+        min: 1
+        fields:
+          - label: 類型
+            name: type
+            widget: select
+            options:
+              - { label: GitHub, value: github }
+              - { label: 網站, value: site }
+              - { label: 文件, value: doc }
+              - { label: Release, value: release }
+          - { label: 網址, name: href, widget: string }
+
+  - name: project_sections
+    label: Projects 文字區塊
+    label_singular: Projects 文字區塊
+    folder: src/content/sections/projects
+    create: true
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    sortable_fields: [order, title]
+    fields: *basic_section_fields
+
+  - name: link_groups
+    label: 連結群組
+    label_singular: 連結群組
+    folder: src/content/link-groups
+    create: true
+    extension: yml
+    format: yaml
+    slug: '{{slug}}'
+    identifier_field: title
+    sortable_fields: [order, title]
+    fields:
+      - { label: 群組名稱, name: title, widget: string }
+      - { label: 群組說明, name: description, widget: text, required: false }
+      - { label: 順序, name: order, widget: number, value_type: int, default: 0 }
+      - { label: 顯示, name: visible, widget: boolean, default: true }
+      - { label: 預設收合, name: collapsed, widget: boolean, default: false }
+
+  - name: links
+    label: 連結
+    label_singular: 連結
+    folder: src/content/links
+    create: true
+    extension: yml
+    format: yaml
+    slug: '{{slug}}'
+    identifier_field: name
+    sortable_fields: [order, name]
+    view_filters:
+      - { label: 顯示中, field: visible, pattern: 'true' }
+      - { label: 已隱藏, field: visible, pattern: 'false' }
+    fields:
+      - { label: 名稱, name: name, widget: string }
+      - { label: 簡介, name: intro, widget: string }
+      - { label: 網址, name: link, widget: string }
+      - { label: Avatar, name: avatar, widget: image, choose_url: true }
+      - label: 群組
+        name: group
+        widget: relation
+        collection: link_groups
+        search_fields: [title]
+        value_field: '{{slug}}'
+        display_fields: [title]
+      - { label: 順序, name: order, widget: number, value_type: int, default: 0 }
+      - { label: 顯示, name: visible, widget: boolean, default: true }
+
+  - name: link_sections
+    label: Links 文字區塊
+    label_singular: Links 文字區塊
+    folder: src/content/sections/links
+    create: true
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    sortable_fields: [order, title]
+    fields:
+      - { label: 標題, name: title, widget: string }
+      - label: URL 識別碼
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 只能使用小寫英文字母、數字與連字號]
+      - { label: 順序, name: order, widget: number, value_type: int, default: 0 }
+      - { label: 顯示, name: visible, widget: boolean, default: true }
+      - { label: 顯示標題, name: showHeading, widget: boolean, default: true }
+      - { label: 內容, name: body, widget: markdown, required: false }
+
+  - name: docs
+    label: 文件
+    label_singular: 文件
+    description: Docs 頁面預設停用；準備好內容後再到「頁面與導覽」開啟。
+    folder: src/content/docs
+    create: true
+    extension: md
+    format: frontmatter
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    identifier_field: title
+    sortable_fields: [category, order, title]
+    view_filters:
+      - { label: 草稿, field: draft, pattern: 'true' }
+      - { label: 已發布, field: draft, pattern: 'false' }
+    fields:
+      - { label: 標題, name: title, widget: string }
+      - { label: 說明, name: description, widget: text, required: false }
+      - { label: 分類, name: category, widget: string, default: General }
+      - { label: 順序, name: order, widget: number, value_type: int, default: 0 }
+      - { label: 草稿, name: draft, widget: boolean, default: true }
+      - { label: 開放留言, name: comment, widget: boolean, default: false }
+      - label: 更新日期
+        name: updatedDate
+        widget: datetime
+        required: false
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
+      - { label: 內文, name: body, widget: markdown }

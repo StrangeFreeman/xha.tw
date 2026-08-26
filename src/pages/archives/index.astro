@@ -1,10 +1,14 @@
 ---
+import { cmsPage } from '@/cms-config'
+
 import { PostPreview } from 'astro-pure/components/pages'
-import { getBlogCollection, groupCollectionsByYear, sortMDByDate } from 'astro-pure/server'
 import { Button } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
+import { getBlogCollection, groupCollectionsByYear, sortMDByDate } from '@/utils/blog'
 
 export const prerender = true
+
+if (!cmsPage.blog.enabled) return Astro.redirect('/404')
 
 const allPosts = await getBlogCollection()
 const allPostsByDate = sortMDByDate(allPosts)

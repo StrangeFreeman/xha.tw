@@ -1,60 +1,100 @@
 ---
-import links from '@/public/links.json'
+import { getCollection, render } from 'astro:content'
+import { cmsPage } from '@/cms-config'
 import config from 'virtual:config'
 
-import { Collapse, Timeline } from 'astro-pure/user'
+import { Collapse } from 'astro-pure/user'
 import PageLayout from '@/layouts/CommonPage.astro'
 import FriendList from '@/components/links/FriendList.astro'
 
-const headings = [
-  { depth: 2, slug: 'common-links', text: 'Common Links' },
-  { depth: 2, slug: 'special-links', text: 'Special Links' },
-  { depth: 2, slug: 'apply-links', text: 'Apply Links' }
-]
+if (!cmsPage.links.enabled) return Astro.redirect('/404')
 
-const { friends } = links
+const linkEntries = (await getCollection('links'))
+  .filter(({ data }) => data.visible)
+  .sort((a, b) => a.data.order - b.data.order)
+const groupBlocks = (await getCollection('linkGroups'))
+  .filter(({ data }) => data.visible)
+  .map((entry) => ({ kind: 'group' as const, order: entry.data.order, entry }))
+const contentBlocks = await Promise.all(
+  (await getCollection('linkSections'))
+    .filter(({ data }) => data.visible)
+    .map(async (entry) => ({
+      kind: 'content' as const,
+      order: entry.data.order,
+      entry,
+      ...(await render(entry))
+    }))
+)
+const blocks = [...groupBlocks, ...contentBlocks].sort((a, b) => a.order - b.order)
+const headings = blocks.flatMap((block) => {
+  if (block.kind === 'group')
+    return block.entry.data.collapsed
+      ? []
+      : [{ depth: 2, slug: block.entry.id, text: block.entry.data.title }]
+  return block.entry.data.showHeading
+    ? [{ depth: 2, slug: block.entry.data.slug, text: block.entry.data.title }, ...block.headings]
+    : block.headings
+})
+
 const linksConf = config.integ.links
-const linkEditPage = 'https://github.com/StrangeFreeman/xha.tw/blob/main/public/links.json'
 ---
 
-<PageLayout title='Links' {headings} comment>
-  <p>連結會以隨機順序顯示。</p>
-  <h2 id='common-links'>友站連結</h2>
-  <FriendList list={friends[0]} />
-  <Collapse title='暫時失效的連結'>
-    <FriendList list={friends[1]} />
-  </Collapse>
-  <Collapse title='友鏈紀錄'>
-    <Timeline events={linksConf.logbook} />
-  </Collapse>
-  <h2 id='special-links'>特別連結</h2>
-  <FriendList list={friends[2]} />
-
-  <h2 id='apply-links'>申請友鏈</h2>
-  <p>本站資訊（點擊即可複製）：</p>
-  <blockquote class='not-prose grid grid-cols-[auto_1fr] gap-x-2 break-words border-s-4 ps-4'>
-    {
-      linksConf.applyTip.map(({ name, val }) => {
-        const script = `navigator.clipboard.writeText('${val}');document.dispatchEvent(new CustomEvent('toast',{detail:{message:'Copied "${val}" to clipboard!'}}))`
+<PageLayout
+  title={cmsPage.links.title}
+  description={cmsPage.links.description}
+  {headings}
+  view={cmsPage.links.view}
+  comment={cmsPage.links.comment}
+>
+  {
+    blocks.map((block) => {
+      if (block.kind === 'group') {
+        const items = linkEntries
+          .filter(({ data }) => data.group === block.entry.id)
+          .map(({ data }) => data)
+        const list = <FriendList list={items} />
         return (
-          <>
-            <span class='text-end'>{name}:</span>
-            <samp class='cursor-pointer' onclick={script}>
-              {val}
-            </samp>
-          </>
+          <section>
+            {block.entry.data.collapsed ? (
+              <Collapse title={block.entry.data.title}>{list}</Collapse>
+            ) : (
+              <>
+                <h2 id={block.entry.id}>{block.entry.data.title}</h2>
+                {block.entry.data.description && <p>{block.entry.data.description}</p>}
+                {list}
+              </>
+            )}
+          </section>
         )
-      })
-    }
-  </blockquote>
+      }
 
-  <p>
-    可透過下方留言，或到 <a href={linkEditPage} target='_blank'>GitHub 提交 PR</a> 申請友鏈。申請條件：
-  </p>
-  <ul>
-    <li>已在你的網站加入本站連結</li>
-    <li>網站可正常瀏覽，並具有正式網域</li>
-    <li>至少有五篇原創文章，且最近一年仍有更新</li>
-    <li>內容合法且不含惡意程式</li>
-  </ul>
+      const Content = block.Content
+      return (
+        <section>
+          {block.entry.data.showHeading && (
+            <h2 id={block.entry.data.slug}>{block.entry.data.title}</h2>
+          )}
+          <Content />
+          {block.entry.data.slug === 'apply-links' && (
+            <>
+              <p>本站資訊（點擊即可複製）：</p>
+              <blockquote class='not-prose grid grid-cols-[auto_1fr] gap-x-2 break-words border-s-4 ps-4'>
+                {linksConf.applyTip.map(({ name, val }) => {
+                  const script = `navigator.clipboard.writeText('${val}');document.dispatchEvent(new CustomEvent('toast',{detail:{message:'Copied "${val}" to clipboard!'}}))`
+                  return (
+                    <>
+                      <span class='text-end'>{name}:</span>
+                      <samp class='cursor-pointer' onclick={script}>
+                        {val}
+                      </samp>
+                    </>
+                  )
+                })}
+              </blockquote>
+            </>
+          )}
+        </section>
+      )
+    })
+  }
 </PageLayout>

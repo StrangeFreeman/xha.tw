@@ -1,26 +1,22 @@
-import { type CollectionEntry, type CollectionKey, getCollection } from 'astro:content'
+import { getCollection, type CollectionEntry } from 'astro:content'
 
-type Collections = CollectionEntry<CollectionKey>[]
+type Collections = CollectionEntry<'blog'>[]
 
 export const prod = import.meta.env.PROD
 
 /** Note: this function filters out draft posts based on the environment */
-export async function getBlogCollection(contentType: CollectionKey = 'blog') {
-  return await getCollection(contentType, ({ data }: CollectionEntry<typeof contentType>) => {
+export async function getBlogCollection() {
+  return await getCollection('blog', ({ data }) => {
     // Not in production & draft is not false
     return prod ? !data.draft : true
   })
 }
 
-function getYearFromCollection<T extends CollectionKey>(
-  collection: CollectionEntry<T>
-): number | undefined {
+function getYearFromCollection(collection: CollectionEntry<'blog'>): number | undefined {
   const dateStr = collection.data.updatedDate ?? collection.data.publishDate
   return dateStr ? new Date(dateStr).getFullYear() : undefined
 }
-export function groupCollectionsByYear<T extends CollectionKey>(
-  collections: Collections
-): [number, CollectionEntry<T>[]][] {
+export function groupCollectionsByYear(collections: Collections): [number, Collections][] {
   const collectionsByYear = collections.reduce((acc, collection) => {
     const year = getYearFromCollection(collection)
     if (year !== undefined) {
@@ -32,9 +28,9 @@ export function groupCollectionsByYear<T extends CollectionKey>(
     return acc
   }, new Map<number, Collections>())
 
-  return Array.from(
-    collectionsByYear.entries() as IterableIterator<[number, CollectionEntry<T>[]]>
-  ).sort((a, b) => b[0] - a[0])
+  return Array.from(collectionsByYear.entries() as IterableIterator<[number, Collections]>).sort(
+    (a, b) => b[0] - a[0]
+  )
 }
 
 export function sortMDByDate(collections: Collections): Collections {

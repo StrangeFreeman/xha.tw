@@ -1,0 +1,12 @@
+{
+  "key": "docs",
+  "title": "Docs",
+  "navigationLabel": "Docs",
+  "path": "/docs",
+  "navigationOrder": 15,
+  "enabled": false,
+  "showInNavigation": false,
+  "view": false,
+  "comment": false,
+  "description": "文件與使用筆記"
+}

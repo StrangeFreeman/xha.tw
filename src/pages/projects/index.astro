@@ -1,19 +1,68 @@
 ---
-import PageLayout from '@/layouts/CommonPage.astro'
+import { getCollection, render } from 'astro:content'
+import { cmsPage } from '@/cms-config'
 
-const headings = [
-  { depth: 2, slug: 'programs', text: 'Programs' },
-  { depth: 2, slug: 'learnings', text: 'Learnings' },
-  { depth: 2, slug: 'others', text: 'Others' },
-  { depth: 2, slug: 'gpg-signature', text: 'GPG Signature' },
-  { depth: 2, slug: 'sponsorship', text: 'Sponsorship' }
-]
+import PageLayout from '@/layouts/CommonPage.astro'
+import ProjectSection from '@/components/projects/ProjectSection.astro'
+
+if (!cmsPage.projects.enabled) return Astro.redirect('/404')
+
+const projectEntries = (await getCollection('projects'))
+  .filter(({ data }) => data.visible)
+  .sort((a, b) => a.data.order - b.data.order)
+const categoryBlocks = (await getCollection('projectCategories'))
+  .filter(({ data }) => data.visible)
+  .map((entry) => ({ kind: 'category' as const, order: entry.data.order, entry }))
+const contentBlocks = await Promise.all(
+  (await getCollection('projectSections'))
+    .filter(({ data }) => data.visible)
+    .map(async (entry) => ({
+      kind: 'content' as const,
+      order: entry.data.order,
+      entry,
+      ...(await render(entry))
+    }))
+)
+const blocks = [...categoryBlocks, ...contentBlocks].sort((a, b) => a.order - b.order)
+const headings = blocks.flatMap((block) => {
+  if (block.kind === 'category')
+    return [{ depth: 2, slug: block.entry.id, text: block.entry.data.title }]
+  return [
+    { depth: 2, slug: block.entry.data.slug, text: block.entry.data.title },
+    ...block.headings
+  ]
+})
 ---
 
-<PageLayout title='Projects' {headings} view>
-  <h2 id='programs'>Programs</h2>
-  <h2 id='learnings'>Learnings</h2>
-  <h2 id='others'>Others</h2>
-  <h2 id='gpg-signature'>GPG Signature</h2>
-  <h2 id='sponsorship'>Sponsorship</h2>
+<PageLayout
+  title={cmsPage.projects.title}
+  description={cmsPage.projects.description}
+  {headings}
+  view={cmsPage.projects.view}
+  comment={cmsPage.projects.comment}
+>
+  {
+    blocks.map((block) => {
+      if (block.kind === 'category') {
+        const projects = projectEntries
+          .filter(({ data }) => data.category === block.entry.id)
+          .map(({ data }) => data)
+        return (
+          <section>
+            <h2 id={block.entry.id}>{block.entry.data.title}</h2>
+            {block.entry.data.description && <p>{block.entry.data.description}</p>}
+            {projects.length > 0 && <ProjectSection {projects} />}
+          </section>
+        )
+      }
+
+      const Content = block.Content
+      return (
+        <section>
+          <h2 id={block.entry.data.slug}>{block.entry.data.title}</h2>
+          <Content />
+        </section>
+      )
+    })
+  }
 </PageLayout>

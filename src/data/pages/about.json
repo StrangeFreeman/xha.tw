@@ -1,0 +1,12 @@
+{
+  "key": "about",
+  "title": "About",
+  "navigationLabel": "About",
+  "path": "/about",
+  "navigationOrder": 40,
+  "enabled": true,
+  "showInNavigation": true,
+  "view": false,
+  "comment": true,
+  "description": "關於 xhA 與這個網站"
+}

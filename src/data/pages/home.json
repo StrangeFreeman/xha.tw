@@ -1,0 +1,12 @@
+{
+  "key": "home",
+  "title": "Home",
+  "navigationLabel": "Home",
+  "path": "/",
+  "navigationOrder": 0,
+  "enabled": true,
+  "showInNavigation": false,
+  "view": false,
+  "comment": false,
+  "description": "xhA 的個人網站首頁"
+}

@@ -1,0 +1,12 @@
+{
+  "key": "projects",
+  "title": "Projects",
+  "navigationLabel": "Projects",
+  "path": "/projects",
+  "navigationOrder": 20,
+  "enabled": true,
+  "showInNavigation": true,
+  "view": true,
+  "comment": false,
+  "description": "專案、學習紀錄與其他作品"
+}

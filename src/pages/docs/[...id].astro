@@ -1,0 +1,20 @@
+---
+import type { GetStaticPaths } from 'astro'
+import { getCollection, render } from 'astro:content'
+import { cmsPage } from '@/cms-config'
+
+import PageLayout from '@/layouts/CommonPage.astro'
+
+export const getStaticPaths = (async () => {
+  if (!cmsPage.docs.enabled) return []
+  const entries = await getCollection('docs', ({ data }) => !data.draft)
+  return entries.map((entry) => ({ params: { id: entry.id }, props: { entry } }))
+}) satisfies GetStaticPaths
+
+const { entry } = Astro.props
+const { Content, headings } = await render(entry)
+---
+
+<PageLayout title={entry.data.title} {headings} comment={entry.data.comment}>
+  <Content />
+</PageLayout>

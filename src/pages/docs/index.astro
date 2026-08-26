@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content'
+import { cmsPage } from '@/cms-config'
+
+import PageLayout from '@/layouts/CommonPage.astro'
+
+if (!cmsPage.docs.enabled) return Astro.redirect('/404')
+
+const entries = (await getCollection('docs', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+)
+const categories = Array.from(new Set(entries.map(({ data }) => data.category)))
+const headings = categories.map((category) => ({
+  depth: 2,
+  slug: category
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, ''),
+  text: category
+}))
+---
+
+<PageLayout
+  title={cmsPage.docs.title}
+  description={cmsPage.docs.description}
+  {headings}
+  view={cmsPage.docs.view}
+  comment={cmsPage.docs.comment}
+>
+  {
+    entries.length === 0 ? (
+      <p>目前沒有已公開的文件。</p>
+    ) : (
+      categories.map((category) => {
+        const slug = category
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-|-$/g, '')
+        return (
+          <section>
+            <h2 id={slug}>{category}</h2>
+            <ul>
+              {entries
+                .filter(({ data }) => data.category === category)
+                .map((entry) => (
+                  <li>
+                    <a href={`/docs/${entry.id}`}>{entry.data.title}</a>
+                    {entry.data.description && <span> — {entry.data.description}</span>}
+                  </li>
+                ))}
+            </ul>
+          </section>
+        )
+      })
+    )
+  }
+</PageLayout>

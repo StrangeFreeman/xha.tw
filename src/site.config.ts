@@ -1,13 +1,15 @@
 import type { CardListData, Config, IntegrationUserConfig, ThemeUserConfig } from 'astro-pure/types'
 
+import { cmsPages, cmsSite } from './cms.config'
+
 export const theme: ThemeUserConfig = {
   // [Basic]
   /** Title for your website. Will be used in metadata and as browser tab title. */
-  title: 'xha.tw',
+  title: cmsSite.title,
   /** Will be used in index page & copyright declaration */
-  author: 'xhA',
+  author: cmsSite.author,
   /** Description metadata for your website. Can be used in page metadata. */
-  description: 'xhA 的個人網站與技術筆記',
+  description: cmsSite.description,
   /** The default favicon for your site which should be a path to an image in the `public/` directory. */
   favicon: '/favicon/favicon.ico',
   /** The default social card image for your site which should be a path to an image in the `public/` directory. */
@@ -47,12 +49,10 @@ export const theme: ThemeUserConfig = {
 
   /** Configure the header of your site. */
   header: {
-    menu: [
-      { title: 'Blog', link: '/blog' },
-      { title: 'Projects', link: '/projects' },
-      { title: 'Links', link: '/links' },
-      { title: 'About', link: '/about' }
-    ]
+    menu: cmsPages
+      .filter((page) => page.enabled && page.showInNavigation)
+      .sort((a, b) => a.navigationOrder - b.navigationOrder)
+      .map((page) => ({ title: page.navigationLabel, link: page.path }))
   },
 
   /** Configure the footer of your site. */
@@ -72,7 +72,7 @@ export const theme: ThemeUserConfig = {
     credits: true,
     /** Optional details about the social media accounts for this site. */
     social: [
-      { icon: 'github', label: 'GitHub', href: 'https://github.com/StrangeFreeman' },
+      { icon: 'github', label: cmsSite.githubLabel, href: cmsSite.githubUrl },
       { icon: 'rss', label: 'RSS', href: '/rss.xml' }
     ]
   },

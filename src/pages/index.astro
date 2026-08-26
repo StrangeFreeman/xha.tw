@@ -1,16 +1,23 @@
 ---
 import { Image } from 'astro:assets'
+import { getCollection, render } from 'astro:content'
+import { cmsPage, cmsSite } from '@/cms-config'
 
 import { PostPreview } from 'astro-pure/components/pages'
-import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
 import { Button, Icon, Label } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import Section from '@/components/home/Section.astro'
+import { getBlogCollection, sortMDByDate } from '@/utils/blog'
 import config from '@/site-config'
 
-const MAX_POSTS = 10
 const allPosts = await getBlogCollection()
-const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
+const allPostsByDate = sortMDByDate(allPosts)
+const sections = await Promise.all(
+  (await getCollection('homeSections'))
+    .filter(({ data }) => data.visible)
+    .sort((a, b) => a.data.order - b.data.order)
+    .map(async (entry) => ({ entry, ...(await render(entry)) }))
+)
 
 const imagePath = config.logo.src
 const images = import.meta.glob<{ default: ImageMetadata }>(
@@ -22,68 +29,94 @@ if (!images[imagePath])
   )
 ---
 
-<PageLayout meta={{ title: 'Home' }} highlightColor='#659EB9'>
+<PageLayout
+  meta={{ title: cmsPage.home.title, description: cmsPage.home.description }}
+  highlightColor='#659EB9'
+>
   <main class='flex w-full flex-col items-center'>
     <section class='animate mb-10 flex flex-col items-center gap-y-7' id='content-header'>
-      <Image
-        src={images[imagePath]()}
-        alt={config.logo.alt || 'Profile'}
-        class='h-28 w-auto rounded-full border p-1'
-        loading='eager'
-        fetchpriority='high'
-      />
+      {
+        cmsSite.avatarUrl ? (
+          <img
+            src={cmsSite.avatarUrl}
+            alt={config.logo.alt || 'Profile'}
+            class='h-28 w-28 rounded-full border object-cover p-1'
+            loading='eager'
+            fetchpriority='high'
+          />
+        ) : (
+          <Image
+            src={images[imagePath]()}
+            alt={config.logo.alt || 'Profile'}
+            class='h-28 w-auto rounded-full border p-1'
+            loading='eager'
+            fetchpriority='high'
+          />
+        )
+      }
 
       <div class='flex flex-col items-center gap-y-4'>
-        <h1 class='text-3xl font-medium'>{config.author}</h1>
+        <h1 class='text-3xl font-medium'>{cmsSite.author}</h1>
         <div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
-          <Label title='Taiwan / Taipei'>
+          <Label title={cmsSite.location}>
             <Icon name='location' class='size-5' slot='icon' />
           </Label>
-          <Label title='GitHub' as='a' href='https://github.com/StrangeFreeman' target='_blank'>
+          <Label title={cmsSite.githubLabel} as='a' href={cmsSite.githubUrl} target='_blank'>
             <Icon name='github' class='size-5' slot='icon' />
           </Label>
         </div>
       </div>
 
-      {/* Project repository */}
-      <a
-        href='https://github.com/StrangeFreeman/xha.tw'
-        target='_blank'
-        class='flex flex-row items-center gap-x-3 rounded-full border bg-background px-4 py-2 text-sm shadow-sm transition-shadow hover:shadow-md'
-      >
-        <span class='relative flex items-center justify-center'>
-          <span
-            class='absolute size-2 animate-ping rounded-full border border-green-400 bg-green-400 opacity-75'
-          ></span>
-          <span class='size-2 rounded-full bg-green-400'></span>
-        </span>
-        <p class='font-medium text-muted-foreground'>View source</p>
-      </a>
+      {
+        cmsSite.showSource && (
+          <a
+            href={cmsSite.sourceUrl}
+            target='_blank'
+            class='flex flex-row items-center gap-x-3 rounded-full border bg-background px-4 py-2 text-sm shadow-sm transition-shadow hover:shadow-md'
+          >
+            <span class='relative flex items-center justify-center'>
+              <span class='absolute size-2 animate-ping rounded-full border border-green-400 bg-green-400 opacity-75' />
+              <span class='size-2 rounded-full bg-green-400' />
+            </span>
+            <p class='font-medium text-muted-foreground'>{cmsSite.sourceLabel}</p>
+          </a>
+        )
+      }
     </section>
 
     <div id='content' class='animate flex flex-col gap-y-10 md:w-4/5 lg:w-5/6'>
-      <Section title='About'>
-        <Button title='More about me' class='w-fit self-end' href='/about' variant='ahead' />
-      </Section>
       {
-        allPostsByDate.length > 0 && (
-          <Section title='Posts'>
-            <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
-              {allPostsByDate.map((p) => (
-                <li class='flex flex-col gap-x-2 sm:flex-row'>
-                  <PostPreview post={p} />
-                </li>
-              ))}
-            </ul>
-            <Button title='More posts' class='w-fit self-end' href='/blog' variant='ahead' />
-          </Section>
-        )
-      }
+        sections.map(({ entry, Content }) => {
+          const { buttonLabel, buttonUrl, kind, postLimit = 10 } = entry.data
+          if (kind === 'latest-posts' && allPostsByDate.length === 0) return null
 
-      <Section title='Education' />
-      <Section title='Website List' />
-      <Section title='Certifications' />
-      <Section title='Skills' />
+          return (
+            <Section title={entry.data.title}>
+              {kind === 'latest-posts' ? (
+                <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
+                  {allPostsByDate.slice(0, postLimit).map((post) => (
+                    <li class='flex flex-col gap-x-2 sm:flex-row'>
+                      <PostPreview post={post} />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div class='prose max-w-none'>
+                  <Content />
+                </div>
+              )}
+              {buttonLabel && buttonUrl && (
+                <Button
+                  title={buttonLabel}
+                  class='w-fit self-end'
+                  href={buttonUrl}
+                  variant='ahead'
+                />
+              )}
+            </Section>
+          )
+        })
+      }
     </div>
   </main>
 </PageLayout>

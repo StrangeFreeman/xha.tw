@@ -1,6 +1,6 @@
 # Decap CMS 使用方式
 
-管理入口為 <https://blog.xha.tw/admin/>。登入後的修改會寫回 GitHub repo；內容發布到 `main` 後，既有 GitHub Actions 會重新建置並同步到 VPS，GitHub Pages 備援站也會同步更新。
+主要管理入口為 <https://xha.tw/admin/>，GitHub Pages 備援入口為 <https://blog.xha.tw/admin/>。兩者使用相同的 Decap CMS 設定，登入後的修改都會寫回 GitHub repo；內容發布到 `main` 後，既有 GitHub Actions 會重新建置並同步到 VPS，GitHub Pages 備援站也會同步更新。
 
 ## 編輯與發布
 

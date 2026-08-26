@@ -106,7 +106,7 @@ export const integ: IntegrationUserConfig = {
       { name: 'Name', val: theme.title },
       { name: 'Desc', val: theme.description || 'Null' },
       { name: 'Link', val: 'https://xha.tw/' },
-      { name: 'Avatar', val: 'https://xha.tw/favicon/favicon.ico' }
+      { name: 'Avatar', val: 'https://xha.tw/uploads/avatar-a4-black.png' }
     ],
     // Cache avatars in `public/avatars/` to improve user experience.
     cacheAvatar: false

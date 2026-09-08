@@ -65,18 +65,18 @@
       "type": "signature",
       "id": "signature",
       "title": "Signature",
-      "visible": false,
+      "visible": true,
       "showHeading": false,
       "showInToc": false,
-      "src": "",
+      "src": "/uploads/xha-signature.svg",
       "alt": "xhA signature",
       "mode": "once-on-view",
       "align": "right",
-      "width": 160,
-      "drawDelay": 200,
+      "width": 220,
+      "drawDelay": 90,
       "rollbackDelay": 80,
       "loopPause": 2000,
-      "defaultDuration": 600
+      "defaultDuration": 520
     }
   ]
 }

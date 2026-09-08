@@ -1,0 +1,42 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 390 280"
+  role="img"
+  aria-labelledby="signature-title signature-description"
+>
+  <title id="signature-title">xhA signature</title>
+  <desc id="signature-description">Handwritten xhA signature converted from the original drawing.</desc>
+  <g
+    fill="none"
+    stroke="#111827"
+    stroke-width="10"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path
+      d="M12 179 C31 160 49 151 67 158 C88 166 98 199 101 258"
+      stroke-width="10"
+      seq="1"
+      data-duration="520"
+    />
+    <path d="M27 266 L117 160" stroke-width="10" seq="2" data-duration="360" />
+    <path
+      d="M136 16 C130 70 151 130 144 172 C141 203 132 258 140 255 C149 232 157 170 177 159 C194 150 199 162 204 182 C211 214 216 238 226 244 C231 247 235 236 238 229"
+      stroke-width="10"
+      seq="3"
+      data-duration="980"
+    />
+    <path
+      d="M223 257 C239 221 230 181 247 117 C256 77 269 29 273 16 C278 4 286 28 294 52 C310 101 323 139 346 177 C362 202 370 208 376 251"
+      stroke-width="10"
+      seq="4"
+      data-duration="1050"
+    />
+    <path
+      d="M223 257 C240 222 260 199 276 176 C291 155 299 141 306 121"
+      stroke-width="10"
+      seq="5"
+      data-duration="480"
+    />
+  </g>
+</svg>

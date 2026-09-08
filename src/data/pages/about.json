@@ -1,24 +1,25 @@
 {
-  "key": "about",
-  "title": "About",
   "navigationLabel": "About",
-  "path": "/about",
-  "navigationOrder": 40,
   "enabled": true,
-  "showInNavigation": true,
+  "path": "/about",
   "view": false,
-  "comment": true,
-  "description": "關於 xhA 與這個網站",
   "blocks": [
     {
       "type": "rich-text",
-      "id": "hobbies",
-      "title": "Hobbies",
       "visible": true,
+      "showHeading": false,
+      "showInToc": false,
+      "id": "intro"
+    },
+    {
+      "buttonLabel": "",
       "showHeading": true,
       "showInToc": true,
+      "visible": true,
+      "title": "Hobbies",
       "content": "",
-      "buttonLabel": "",
+      "type": "rich-text",
+      "id": "hobbies",
       "buttonUrl": ""
     },
     {
@@ -32,14 +33,14 @@
       "groups": []
     },
     {
-      "type": "rich-text",
-      "id": "social-networks",
-      "title": "Social Networks",
-      "visible": true,
+      "buttonLabel": "",
       "showHeading": true,
       "showInToc": true,
+      "visible": true,
+      "title": "Social Networks",
       "content": "",
-      "buttonLabel": "",
+      "type": "rich-text",
+      "id": "social-networks",
       "buttonUrl": ""
     },
     {
@@ -62,21 +63,28 @@
       "events": []
     },
     {
+      "mode": "once-on-view",
+      "src": "/uploads/xha-signature.svg",
+      "showHeading": false,
+      "align": "right",
+      "showInToc": false,
+      "width": 220,
+      "alt": "xhA signature",
+      "visible": true,
+      "loopPause": 2000,
+      "defaultDuration": 520,
+      "title": "Signature",
+      "content": "",
       "type": "signature",
       "id": "signature",
-      "title": "Signature",
-      "visible": true,
-      "showHeading": false,
-      "showInToc": false,
-      "src": "/uploads/xha-signature.svg",
-      "alt": "xhA signature",
-      "mode": "once-on-view",
-      "align": "right",
-      "width": 220,
-      "drawDelay": 90,
       "rollbackDelay": 80,
-      "loopPause": 2000,
-      "defaultDuration": 520
+      "drawDelay": 90
     }
-  ]
+  ],
+  "showInNavigation": true,
+  "title": "About",
+  "navigationOrder": 40,
+  "description": "關於 xhA 與這個網站",
+  "key": "about",
+  "comment": true
 }

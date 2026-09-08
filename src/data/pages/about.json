@@ -8,5 +8,75 @@
   "showInNavigation": true,
   "view": false,
   "comment": true,
-  "description": "關於 xhA 與這個網站"
+  "description": "關於 xhA 與這個網站",
+  "blocks": [
+    {
+      "type": "rich-text",
+      "id": "hobbies",
+      "title": "Hobbies",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": true,
+      "content": "",
+      "buttonLabel": "",
+      "buttonUrl": ""
+    },
+    {
+      "type": "tool-grid",
+      "id": "tools",
+      "title": "Tools",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": true,
+      "description": "",
+      "groups": []
+    },
+    {
+      "type": "rich-text",
+      "id": "social-networks",
+      "title": "Social Networks",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": true,
+      "content": "",
+      "buttonLabel": "",
+      "buttonUrl": ""
+    },
+    {
+      "type": "collapse-list",
+      "id": "gossips",
+      "title": "Gossips",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": true,
+      "items": []
+    },
+    {
+      "type": "timeline",
+      "id": "about-blog",
+      "title": "About Blog",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": true,
+      "description": "",
+      "events": []
+    },
+    {
+      "type": "signature",
+      "id": "signature",
+      "title": "Signature",
+      "visible": false,
+      "showHeading": false,
+      "showInToc": false,
+      "src": "",
+      "alt": "xhA signature",
+      "mode": "once-on-view",
+      "align": "right",
+      "width": 160,
+      "drawDelay": 200,
+      "rollbackDelay": 80,
+      "loopPause": 2000,
+      "defaultDuration": 600
+    }
+  ]
 }

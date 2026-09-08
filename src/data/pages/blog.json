@@ -8,5 +8,6 @@
   "showInNavigation": true,
   "view": false,
   "comment": false,
-  "description": "文章與技術筆記"
+  "description": "文章與技術筆記",
+  "blocks": []
 }

@@ -8,5 +8,71 @@
   "showInNavigation": true,
   "view": false,
   "comment": true,
-  "description": "友站與常用連結"
+  "description": "友站與常用連結",
+  "blocks": [
+    {
+      "type": "rich-text",
+      "id": "links-introduction",
+      "title": "Links introduction",
+      "visible": true,
+      "showHeading": false,
+      "showInToc": false,
+      "content": "連結會以隨機順序顯示。",
+      "buttonLabel": "",
+      "buttonUrl": ""
+    },
+    {
+      "type": "link-grid",
+      "id": "friend-links",
+      "title": "Links",
+      "visible": true,
+      "showHeading": false,
+      "showInToc": false,
+      "groups": [
+        {
+          "title": "友站連結",
+          "description": "Common links",
+          "visible": true,
+          "collapsed": false,
+          "randomize": true,
+          "links": []
+        },
+        {
+          "title": "暫時失效的連結",
+          "description": "Inactive links",
+          "visible": true,
+          "collapsed": true,
+          "randomize": false,
+          "links": []
+        },
+        {
+          "title": "特別連結",
+          "description": "Special links",
+          "visible": true,
+          "collapsed": false,
+          "randomize": true,
+          "links": []
+        }
+      ]
+    },
+    {
+      "type": "link-history",
+      "id": "link-history",
+      "title": "Link History",
+      "visible": false,
+      "showHeading": true,
+      "showInToc": true,
+      "events": []
+    },
+    {
+      "type": "apply-links",
+      "id": "apply-links",
+      "title": "申請友鏈",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": true,
+      "content": "可透過頁面下方留言，或到 GitHub 提交 Pull Request 申請友鏈。\n\n- 已在你的網站加入本站連結\n- 網站可正常瀏覽，並具有正式網域\n- 至少有五篇原創文章，且最近一年仍有更新\n- 內容合法且不含惡意程式",
+      "pullRequestUrl": "https://github.com/StrangeFreeman/xha.tw/pulls"
+    }
+  ]
 }

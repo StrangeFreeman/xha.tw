@@ -1,24 +1,14 @@
 ---
 import { Image } from 'astro:assets'
-import { getCollection, render } from 'astro:content'
 import { cmsPage, cmsSite } from '@/cms-config'
 
-import { PostPreview } from 'astro-pure/components/pages'
-import { Button, Icon, Label } from 'astro-pure/user'
+import { Icon, Label } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
-import Section from '@/components/home/Section.astro'
+import PageBlocks from '@/components/blocks/PageBlocks.astro'
 import { getBlogCollection, sortMDByDate } from '@/utils/blog'
 import config from '@/site-config'
 
-const allPosts = await getBlogCollection()
-const allPostsByDate = sortMDByDate(allPosts)
-const sections = await Promise.all(
-  (await getCollection('homeSections'))
-    .filter(({ data }) => data.visible)
-    .sort((a, b) => a.data.order - b.data.order)
-    .map(async (entry) => ({ entry, ...(await render(entry)) }))
-)
-
+const posts = sortMDByDate(await getBlogCollection())
 const imagePath = config.logo.src
 const images = import.meta.glob<{ default: ImageMetadata }>(
   '/src/assets/*.{jpeg,jpg,png,gif,avif,webp}'
@@ -85,38 +75,7 @@ if (!images[imagePath])
     </section>
 
     <div id='content' class='animate flex flex-col gap-y-10 md:w-4/5 lg:w-5/6'>
-      {
-        sections.map(({ entry, Content }) => {
-          const { buttonLabel, buttonUrl, kind, postLimit = 10 } = entry.data
-          if (kind === 'latest-posts' && allPostsByDate.length === 0) return null
-
-          return (
-            <Section title={entry.data.title}>
-              {kind === 'latest-posts' ? (
-                <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
-                  {allPostsByDate.slice(0, postLimit).map((post) => (
-                    <li class='flex flex-col gap-x-2 sm:flex-row'>
-                      <PostPreview post={post} />
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <div class='prose max-w-none'>
-                  <Content />
-                </div>
-              )}
-              {buttonLabel && buttonUrl && (
-                <Button
-                  title={buttonLabel}
-                  class='w-fit self-end'
-                  href={buttonUrl}
-                  variant='ahead'
-                />
-              )}
-            </Section>
-          )
-        })
-      }
+      <PageBlocks blocks={cmsPage.home.blocks} {posts} layout='home' />
     </div>
   </main>
 </PageLayout>

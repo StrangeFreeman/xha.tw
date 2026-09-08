@@ -8,5 +8,65 @@
   "showInNavigation": false,
   "view": false,
   "comment": false,
-  "description": "xhA 的個人網站首頁"
+  "description": "xhA 的個人網站首頁",
+  "blocks": [
+    {
+      "type": "rich-text",
+      "id": "about",
+      "title": "About",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": false,
+      "content": "Developer / Explorer\n\nHi, I'm xhA ( xiao hong A / 小紅A )<br>Studying hard to find a job. Majoring in cybersecurity, tinkering with self-hosted services and homelabs. I enjoy taking on challenges, patiently exploring complex technologies, and especially love sharing what I learn along the way.",
+      "buttonLabel": "More about me",
+      "buttonUrl": "/about"
+    },
+    {
+      "type": "latest-posts",
+      "id": "posts",
+      "title": "Posts",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": false,
+      "limit": 10,
+      "buttonLabel": "All posts",
+      "buttonUrl": "/blog"
+    },
+    {
+      "type": "card-list",
+      "id": "education",
+      "title": "Education",
+      "visible": false,
+      "showHeading": true,
+      "showInToc": false,
+      "cards": []
+    },
+    {
+      "type": "website-cards",
+      "id": "website-list",
+      "title": "Website List",
+      "visible": false,
+      "showHeading": true,
+      "showInToc": false,
+      "cards": []
+    },
+    {
+      "type": "card-list",
+      "id": "certifications",
+      "title": "Certifications",
+      "visible": false,
+      "showHeading": true,
+      "showInToc": false,
+      "cards": []
+    },
+    {
+      "type": "skill-groups",
+      "id": "skills",
+      "title": "Skills",
+      "visible": false,
+      "showHeading": true,
+      "showInToc": false,
+      "groups": []
+    }
+  ]
 }

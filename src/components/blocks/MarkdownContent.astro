@@ -1,0 +1,13 @@
+---
+import { renderCmsMarkdown } from '@/utils/cms-markdown'
+
+interface Props {
+  content?: string
+  class?: string
+}
+
+const { content = '', class: className = '' } = Astro.props
+const html = await renderCmsMarkdown(content)
+---
+
+{html && <div class:list={['cms-markdown', className]} set:html={html} />}

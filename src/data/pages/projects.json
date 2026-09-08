@@ -8,5 +8,60 @@
   "showInNavigation": true,
   "view": true,
   "comment": false,
-  "description": "專案、學習紀錄與其他作品"
+  "description": "專案、學習紀錄與其他作品",
+  "blocks": [
+    {
+      "type": "project-grid",
+      "id": "projects",
+      "title": "Projects",
+      "visible": true,
+      "showHeading": false,
+      "showInToc": false,
+      "groups": [
+        {
+          "title": "Programs",
+          "description": "",
+          "visible": true,
+          "collapsed": false,
+          "projects": []
+        },
+        {
+          "title": "Learnings",
+          "description": "",
+          "visible": true,
+          "collapsed": false,
+          "projects": []
+        },
+        {
+          "title": "Others",
+          "description": "",
+          "visible": true,
+          "collapsed": false,
+          "projects": []
+        }
+      ]
+    },
+    {
+      "type": "rich-text",
+      "id": "gpg-signature",
+      "title": "GPG Signature",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": true,
+      "content": "",
+      "buttonLabel": "",
+      "buttonUrl": ""
+    },
+    {
+      "type": "rich-text",
+      "id": "sponsorship",
+      "title": "Sponsorship",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": true,
+      "content": "",
+      "buttonLabel": "",
+      "buttonUrl": ""
+    }
+  ]
 }

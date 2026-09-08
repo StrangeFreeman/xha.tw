@@ -1,0 +1,16 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import type { CmsBlock } from '@/cms-config'
+
+import ContentBlock from './ContentBlock.astro'
+
+interface Props {
+  blocks: CmsBlock[]
+  posts?: CollectionEntry<'blog'>[]
+  layout?: 'home' | 'page'
+}
+
+const { blocks, posts = [], layout = 'page' } = Astro.props
+---
+
+{blocks.map((block) => <ContentBlock {block} {posts} {layout} />)}

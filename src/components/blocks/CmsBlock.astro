@@ -1,0 +1,31 @@
+---
+import type { CmsBlock as CmsBlockData } from '@/cms-config'
+
+import ContentBlock from './ContentBlock.astro'
+
+interface Props {
+  kind: CmsBlockData['type']
+  data: string
+}
+
+const { kind, data } = Astro.props
+
+let decoded: Record<string, unknown> = {}
+try {
+  decoded = JSON.parse(decodeURIComponent(data))
+} catch (error) {
+  console.warn(`Could not decode CMS block "${kind}".`, error)
+}
+
+const block = {
+  id: `content-${kind}`,
+  title: '',
+  visible: true,
+  showHeading: false,
+  showInToc: false,
+  type: kind,
+  ...decoded
+} as CmsBlockData
+---
+
+<ContentBlock {block} layout='embedded' />

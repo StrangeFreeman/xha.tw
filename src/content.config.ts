@@ -4,23 +4,16 @@ import { z } from 'astro/zod'
 
 function removeDupsAndLowerCase(array: string[]) {
   if (!array.length) return array
-  const lowercaseItems = array.map((str) => str.toLowerCase())
-  const distinctItems = new Set(lowercaseItems)
-  return Array.from(distinctItems)
+  return Array.from(new Set(array.map((item) => item.toLowerCase())))
 }
 
-// Define blog collection
 const blog = defineCollection({
-  // Load Markdown and MDX files in the `src/content/blog/` directory.
   loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
-  // Required
   schema: ({ image }) =>
     z.object({
-      // Required
       title: z.string().max(60),
       description: z.string().max(160),
       publishDate: z.coerce.date(),
-      // Optional
       updatedDate: z.coerce.date().optional(),
       heroImage: z
         .object({
@@ -29,167 +22,14 @@ const blog = defineCollection({
           inferSize: z.boolean().optional(),
           width: z.number().optional(),
           height: z.number().optional(),
-
           color: z.string().optional()
         })
         .optional(),
       tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
       language: z.string().optional(),
       draft: z.boolean().default(false),
-      // Special fields
       comment: z.boolean().default(true)
     })
-})
-
-const sectionBase = z.object({
-  title: z.string().min(1).max(80),
-  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  order: z.number().int().default(0),
-  visible: z.boolean().default(true)
-})
-
-const optionalUrl = z
-  .union([z.url(), z.literal(''), z.null()])
-  .optional()
-  .transform((value) => value || undefined)
-
-const homeSections = defineCollection({
-  loader: glob({ base: './src/content/sections/home', pattern: '**/*.{md,mdx}' }),
-  schema: sectionBase.extend({
-    kind: z.enum(['markdown', 'latest-posts']).default('markdown'),
-    postLimit: z.number().int().min(1).max(20).optional(),
-    buttonLabel: z.string().max(40).optional(),
-    buttonUrl: z.string().startsWith('/').optional()
-  })
-})
-
-const aboutSections = defineCollection({
-  loader: glob({ base: './src/content/sections/about', pattern: '**/*.{md,mdx}' }),
-  schema: sectionBase
-})
-
-const aboutCards = defineCollection({
-  loader: glob({ base: './src/content/about/cards', pattern: '**/*.{md,mdx}' }),
-  schema: sectionBase.extend({
-    subheading: z.string().max(160).default(''),
-    date: z.string().max(80).default(''),
-    showInTableOfContents: z.boolean().default(false)
-  })
-})
-
-const aboutCollapses = defineCollection({
-  loader: glob({ base: './src/content/about/collapses', pattern: '**/*.{md,mdx}' }),
-  schema: sectionBase.extend({
-    showInTableOfContents: z.boolean().default(false)
-  })
-})
-
-const aboutToolGroups = defineCollection({
-  loader: glob({ base: './src/content/about/tool-groups', pattern: '**/*.{yml,yaml,json}' }),
-  schema: sectionBase.extend({
-    description: z.string().max(240).default(''),
-    showInTableOfContents: z.boolean().default(false),
-    tools: z.array(
-      z.object({
-        name: z.string().min(1).max(80),
-        description: z.string().max(120).default(''),
-        href: z.url(),
-        icon: z.string().min(1),
-        darkIcon: z
-          .string()
-          .nullish()
-          .transform((value) => value || undefined)
-      })
-    )
-  })
-})
-
-const aboutTimelines = defineCollection({
-  loader: glob({ base: './src/content/about/timelines', pattern: '**/*.{yml,yaml,json}' }),
-  schema: sectionBase.extend({
-    description: z.string().max(240).default(''),
-    events: z.array(
-      z.object({
-        date: z.string().min(1).max(80),
-        content: z.string().min(1).max(240),
-        link: optionalUrl,
-        linkLabel: z
-          .string()
-          .max(80)
-          .nullish()
-          .transform((value) => value || undefined)
-      })
-    )
-  })
-})
-
-const projectSections = defineCollection({
-  loader: glob({ base: './src/content/sections/projects', pattern: '**/*.{md,mdx}' }),
-  schema: sectionBase
-})
-
-const linkSections = defineCollection({
-  loader: glob({ base: './src/content/sections/links', pattern: '**/*.{md,mdx}' }),
-  schema: sectionBase.extend({
-    showHeading: z.boolean().default(true)
-  })
-})
-
-const projectCategories = defineCollection({
-  loader: glob({ base: './src/content/project-categories', pattern: '**/*.{yml,yaml,json}' }),
-  schema: z.object({
-    title: z.string().min(1).max(80),
-    description: z.string().max(240).default(''),
-    order: z.number().int().default(0),
-    visible: z.boolean().default(true)
-  })
-})
-
-const projects = defineCollection({
-  loader: glob({ base: './src/content/projects', pattern: '**/*.{yml,yaml,json}' }),
-  schema: z.object({
-    name: z.string().min(1).max(80),
-    description: z.string().min(1).max(240),
-    category: z.string().min(1),
-    image: z
-      .string()
-      .nullish()
-      .transform((value) => value || undefined),
-    order: z.number().int().default(0),
-    visible: z.boolean().default(true),
-    links: z
-      .array(
-        z.object({
-          type: z.enum(['github', 'site', 'doc', 'release']),
-          href: z.url()
-        })
-      )
-      .min(1)
-  })
-})
-
-const linkGroups = defineCollection({
-  loader: glob({ base: './src/content/link-groups', pattern: '**/*.{yml,yaml,json}' }),
-  schema: z.object({
-    title: z.string().min(1).max(80),
-    description: z.string().max(240).default(''),
-    order: z.number().int().default(0),
-    visible: z.boolean().default(true),
-    collapsed: z.boolean().default(false)
-  })
-})
-
-const links = defineCollection({
-  loader: glob({ base: './src/content/links', pattern: '**/*.{yml,yaml,json}' }),
-  schema: z.object({
-    name: z.string().min(1).max(80),
-    intro: z.string().min(1).max(160),
-    link: z.url(),
-    avatar: z.string().min(1),
-    group: z.string().min(1),
-    order: z.number().int().default(0),
-    visible: z.boolean().default(true)
-  })
 })
 
 const docs = defineCollection({
@@ -205,19 +45,4 @@ const docs = defineCollection({
   })
 })
 
-export const collections = {
-  blog,
-  homeSections,
-  aboutSections,
-  aboutCards,
-  aboutCollapses,
-  aboutToolGroups,
-  aboutTimelines,
-  projectSections,
-  linkSections,
-  projectCategories,
-  projects,
-  linkGroups,
-  links,
-  docs
-}
+export const collections = { blog, docs }

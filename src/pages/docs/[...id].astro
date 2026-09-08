@@ -4,6 +4,7 @@ import { getCollection, render } from 'astro:content'
 import { cmsPage } from '@/cms-config'
 
 import PageLayout from '@/layouts/CommonPage.astro'
+import CmsBlock from '@/components/blocks/CmsBlock.astro'
 
 export const getStaticPaths = (async () => {
   if (!cmsPage.docs.enabled) return []
@@ -16,5 +17,5 @@ const { Content, headings } = await render(entry)
 ---
 
 <PageLayout title={entry.data.title} {headings} comment={entry.data.comment}>
-  <Content />
+  <Content components={{ CmsBlock }} />
 </PageLayout>

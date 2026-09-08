@@ -1,42 +1,12 @@
 ---
-import { getCollection, render } from 'astro:content'
 import { cmsPage } from '@/cms-config'
-import config from 'virtual:config'
 
-import { Collapse } from 'astro-pure/user'
 import PageLayout from '@/layouts/CommonPage.astro'
-import FriendList from '@/components/links/FriendList.astro'
+import PageBlocks from '@/components/blocks/PageBlocks.astro'
+import { getBlockHeadings } from '@/utils/page-blocks'
 
 if (!cmsPage.links.enabled) return Astro.redirect('/404')
-
-const linkEntries = (await getCollection('links'))
-  .filter(({ data }) => data.visible)
-  .sort((a, b) => a.data.order - b.data.order)
-const groupBlocks = (await getCollection('linkGroups'))
-  .filter(({ data }) => data.visible)
-  .map((entry) => ({ kind: 'group' as const, order: entry.data.order, entry }))
-const contentBlocks = await Promise.all(
-  (await getCollection('linkSections'))
-    .filter(({ data }) => data.visible)
-    .map(async (entry) => ({
-      kind: 'content' as const,
-      order: entry.data.order,
-      entry,
-      ...(await render(entry))
-    }))
-)
-const blocks = [...groupBlocks, ...contentBlocks].sort((a, b) => a.order - b.order)
-const headings = blocks.flatMap((block) => {
-  if (block.kind === 'group')
-    return block.entry.data.collapsed
-      ? []
-      : [{ depth: 2, slug: block.entry.id, text: block.entry.data.title }]
-  return block.entry.data.showHeading
-    ? [{ depth: 2, slug: block.entry.data.slug, text: block.entry.data.title }, ...block.headings]
-    : block.headings
-})
-
-const linksConf = config.integ.links
+const headings = getBlockHeadings(cmsPage.links.blocks)
 ---
 
 <PageLayout
@@ -46,55 +16,5 @@ const linksConf = config.integ.links
   view={cmsPage.links.view}
   comment={cmsPage.links.comment}
 >
-  {
-    blocks.map((block) => {
-      if (block.kind === 'group') {
-        const items = linkEntries
-          .filter(({ data }) => data.group === block.entry.id)
-          .map(({ data }) => data)
-        const list = <FriendList list={items} />
-        return (
-          <section>
-            {block.entry.data.collapsed ? (
-              <Collapse title={block.entry.data.title}>{list}</Collapse>
-            ) : (
-              <>
-                <h2 id={block.entry.id}>{block.entry.data.title}</h2>
-                {block.entry.data.description && <p>{block.entry.data.description}</p>}
-                {list}
-              </>
-            )}
-          </section>
-        )
-      }
-
-      const Content = block.Content
-      return (
-        <section>
-          {block.entry.data.showHeading && (
-            <h2 id={block.entry.data.slug}>{block.entry.data.title}</h2>
-          )}
-          <Content />
-          {block.entry.data.slug === 'apply-links' && (
-            <>
-              <p>本站資訊（點擊即可複製）：</p>
-              <blockquote class='not-prose grid grid-cols-[auto_1fr] gap-x-2 break-words border-s-4 ps-4'>
-                {linksConf.applyTip.map(({ name, val }) => {
-                  const script = `navigator.clipboard.writeText('${val}');document.dispatchEvent(new CustomEvent('toast',{detail:{message:'Copied "${val}" to clipboard!'}}))`
-                  return (
-                    <>
-                      <span class='text-end'>{name}:</span>
-                      <samp class='cursor-pointer' onclick={script}>
-                        {val}
-                      </samp>
-                    </>
-                  )
-                })}
-              </blockquote>
-            </>
-          )}
-        </section>
-      )
-    })
-  }
+  <PageBlocks blocks={cmsPage.links.blocks} />
 </PageLayout>

@@ -1,0 +1,312 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import type { CmsBlock } from '@/cms-config'
+
+import { PostPreview } from 'astro-pure/components/pages'
+import { Aside, Button, Card, Collapse, Steps, TabItem, Tabs } from 'astro-pure/user'
+import AboutTimeline from '@/components/about/AboutTimeline.astro'
+import Signature from '@/components/about/Signature.astro'
+import ToolSection from '@/components/about/ToolSection.astro'
+import FriendList from '@/components/links/FriendList.astro'
+import ProjectSection from '@/components/projects/ProjectSection.astro'
+import config from '@/site-config'
+
+import MarkdownContent from './MarkdownContent.astro'
+
+interface Props {
+  block: CmsBlock
+  posts?: CollectionEntry<'blog'>[]
+  layout?: 'home' | 'page' | 'embedded'
+}
+
+const { block, posts = [], layout = 'page' } = Astro.props
+const applyTip = config.integ.links?.applyTip ?? []
+const shouldRender = block.visible && !(block.type === 'latest-posts' && posts.length === 0)
+---
+
+{
+  shouldRender && (
+    <section
+      id={block.showHeading ? undefined : block.id}
+      class:list={[
+        layout === 'home' && 'flex flex-col gap-y-5 md:flex-row md:gap-y-0',
+        'cms-block'
+      ]}
+      data-block-type={block.type}
+    >
+      {layout === 'home' && block.showHeading && block.title ? (
+        <div class='text-xl font-medium md:min-w-36'>
+          <h2 id={block.id}>{block.title}</h2>
+        </div>
+      ) : (
+        block.showHeading && block.title && <h2 id={block.id}>{block.title}</h2>
+      )}
+
+      <div class:list={[layout === 'home' && 'flex flex-1 flex-col gap-y-3']}>
+        {block.type === 'rich-text' && (
+          <>
+            <MarkdownContent content={block.content} />
+            {block.buttonLabel && block.buttonUrl && (
+              <Button
+                title={block.buttonLabel}
+                class='w-fit self-end'
+                href={block.buttonUrl}
+                variant='ahead'
+              />
+            )}
+          </>
+        )}
+
+        {block.type === 'card-list' && (
+          <div class='not-prose grid gap-3 sm:grid-cols-2'>
+            {block.cards.map((card) => (
+              <Card heading={card.title} subheading={card.subtitle} date={card.date}>
+                <MarkdownContent content={card.content} class='prose max-w-none' />
+                {card.href && <Button href={card.href} title='Open' variant='ahead' />}
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {block.type === 'collapse-list' && (
+          <div class='not-prose'>
+            {block.items.map((item) => (
+              <Collapse title={item.title}>
+                <MarkdownContent content={item.content} class='prose max-w-none' />
+              </Collapse>
+            ))}
+          </div>
+        )}
+
+        {block.type === 'aside' && (
+          <Aside type={block.variant} title={block.title || undefined}>
+            <MarkdownContent content={block.content} />
+          </Aside>
+        )}
+
+        {block.type === 'tabs' && block.tabs.length > 0 && (
+          <Tabs>
+            {block.tabs.map((tab) => (
+              <TabItem label={tab.title}>
+                <MarkdownContent content={tab.content} />
+              </TabItem>
+            ))}
+          </Tabs>
+        )}
+
+        {block.type === 'steps' && block.steps.length > 0 && (
+          <Steps>
+            <ol>
+              {block.steps.map((step) => (
+                <li>
+                  <h3>{step.title}</h3>
+                  <MarkdownContent content={step.content} />
+                </li>
+              ))}
+            </ol>
+          </Steps>
+        )}
+
+        {block.type === 'timeline' && (
+          <>
+            {block.description && <p>{block.description}</p>}
+            <AboutTimeline events={block.events} />
+          </>
+        )}
+
+        {block.type === 'signature' && block.src && (
+          <Signature
+            src={block.src}
+            alt={block.alt}
+            mode={block.mode}
+            align={block.align}
+            width={block.width}
+            drawDelay={block.drawDelay}
+            rollbackDelay={block.rollbackDelay}
+            loopPause={block.loopPause}
+            defaultDuration={block.defaultDuration}
+          />
+        )}
+
+        {block.type === 'buttons' && (
+          <div class='not-prose flex flex-wrap gap-2'>
+            {block.buttons.map((button) => (
+              <Button
+                title={button.label}
+                href={button.href}
+                variant={
+                  button.variant === 'primary'
+                    ? 'ahead'
+                    : button.variant === 'secondary'
+                      ? 'pill'
+                      : 'button'
+                }
+              />
+            ))}
+          </div>
+        )}
+
+        {block.type === 'latest-posts' && posts.length > 0 && (
+          <>
+            <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
+              {posts.slice(0, block.limit).map((post) => (
+                <li class='flex flex-col gap-x-2 sm:flex-row'>
+                  <PostPreview {post} />
+                </li>
+              ))}
+            </ul>
+            {block.buttonLabel && block.buttonUrl && (
+              <Button
+                title={block.buttonLabel}
+                class='w-fit self-end'
+                href={block.buttonUrl}
+                variant='ahead'
+              />
+            )}
+          </>
+        )}
+
+        {block.type === 'skill-groups' && (
+          <div class='not-prose flex flex-col gap-5'>
+            {block.groups
+              .filter((group) => group.visible)
+              .map((group) => (
+                <div class='flex flex-col gap-2 md:flex-row md:gap-5'>
+                  <h3 class='m-0 w-1/5 font-medium'>{group.title}</h3>
+                  <div class='flex flex-wrap gap-2 md:w-4/5'>
+                    {group.skills.map((skill) => (
+                      <Button as='span' title={skill} variant='pill' />
+                    ))}
+                  </div>
+                </div>
+              ))}
+          </div>
+        )}
+
+        {block.type === 'website-cards' && (
+          <div class='not-prose grid gap-3 sm:grid-cols-2'>
+            {block.cards.map((card) => (
+              <a
+                href={card.href}
+                target='_blank'
+                rel='noopener noreferrer'
+                class='group overflow-hidden rounded-xl border bg-background no-underline transition-colors hover:bg-muted'
+              >
+                {card.image && (
+                  <img
+                    src={card.image}
+                    alt=''
+                    class='aspect-[16/7] w-full object-cover'
+                    loading='lazy'
+                  />
+                )}
+                <div class='p-3'>
+                  <h3 class='m-0 text-base text-foreground'>{card.title}</h3>
+                  {card.description && (
+                    <p class='m-0 mt-1 text-sm text-muted-foreground'>{card.description}</p>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+
+        {block.type === 'tool-grid' && (
+          <>
+            {block.description && <p>{block.description}</p>}
+            <div class='not-prose flex flex-col gap-5'>
+              {block.groups
+                .filter((group) => group.visible)
+                .map((group) => (
+                  <ToolSection
+                    title={group.title}
+                    tools={group.tools.filter((tool) => tool.visible)}
+                  />
+                ))}
+            </div>
+          </>
+        )}
+
+        {block.type === 'project-grid' && (
+          <div class='flex flex-col gap-8'>
+            {block.groups.map((group, index) => {
+              if (!group.visible) return null
+              const projects = group.projects.filter((project) => project.visible)
+              const content = (
+                <>
+                  {group.description && <p>{group.description}</p>}
+                  {projects.length > 0 && <ProjectSection {projects} />}
+                </>
+              )
+              return group.collapsed ? (
+                <Collapse title={group.title}>{content}</Collapse>
+              ) : (
+                <section>
+                  <h2 id={`${block.id}-${index + 1}`}>{group.title}</h2>
+                  {content}
+                </section>
+              )
+            })}
+          </div>
+        )}
+
+        {block.type === 'link-grid' && (
+          <div class='flex flex-col gap-8'>
+            {block.groups.map((group, index) => {
+              if (!group.visible) return null
+              const links = group.links.filter((link) => link.visible)
+              const list = <FriendList list={links} randomize={group.randomize} />
+              return group.collapsed ? (
+                <Collapse title={group.title}>{list}</Collapse>
+              ) : (
+                <section>
+                  <h2 id={`${block.id}-${index + 1}`}>{group.title}</h2>
+                  {group.description && <p>{group.description}</p>}
+                  {list}
+                </section>
+              )
+            })}
+          </div>
+        )}
+
+        {block.type === 'link-history' && (
+          <AboutTimeline
+            events={block.events.map((event) => ({
+              date: event.date,
+              content: `${event.name} — ${event.status}${event.content ? `: ${event.content}` : ''}`
+            }))}
+          />
+        )}
+
+        {block.type === 'apply-links' && (
+          <>
+            <MarkdownContent content={block.content} />
+            {block.pullRequestUrl && (
+              <Button
+                href={block.pullRequestUrl}
+                title='Open Pull Request'
+                variant='ahead'
+                target='_blank'
+              />
+            )}
+            <p>本站資訊（點擊即可複製）：</p>
+            <blockquote class='not-prose grid grid-cols-[auto_1fr] gap-x-2 break-words border-s-4 ps-4'>
+              {applyTip.map(({ name, val }) => {
+                const encodedValue = JSON.stringify(val)
+                const script = `navigator.clipboard.writeText(${encodedValue});document.dispatchEvent(new CustomEvent('toast',{detail:{message:'Copied to clipboard!'}}))`
+                return (
+                  <>
+                    <span class='text-end'>{name}:</span>
+                    <samp class='cursor-pointer' onclick={script}>
+                      {val}
+                    </samp>
+                  </>
+                )
+              })}
+            </blockquote>
+          </>
+        )}
+      </div>
+    </section>
+  )
+}

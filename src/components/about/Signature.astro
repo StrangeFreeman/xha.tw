@@ -1,0 +1,181 @@
+---
+interface Props {
+  src: string
+  alt: string
+  mode: 'static' | 'once-on-view' | 'loop'
+  align: 'left' | 'center' | 'right'
+  width: number
+  drawDelay: number
+  rollbackDelay: number
+  loopPause: number
+  defaultDuration: number
+}
+
+const { src, alt, mode, align, width, drawDelay, rollbackDelay, loopPause, defaultDuration } =
+  Astro.props
+---
+
+<div
+  class:list={[
+    'signature-wrapper my-4 text-foreground',
+    align === 'left' && 'me-auto',
+    align === 'center' && 'mx-auto',
+    align === 'right' && 'ms-auto'
+  ]}
+  style={`width:min(${width}px, 100%)`}
+  data-signature
+  data-src={src}
+  data-alt={alt}
+  data-mode={mode}
+  data-draw-delay={drawDelay}
+  data-rollback-delay={rollbackDelay}
+  data-loop-pause={loopPause}
+  data-default-duration={defaultDuration}
+>
+  <img src={src} alt={alt} class='h-auto w-full dark:invert' loading='lazy' />
+</div>
+
+<script>
+  const SVG_NS = 'http://www.w3.org/2000/svg'
+
+  function wait(milliseconds: number) {
+    return new Promise((resolve) => window.setTimeout(resolve, milliseconds))
+  }
+
+  function parseNumber(value: string | undefined, fallback: number) {
+    const parsed = Number.parseInt(value || '', 10)
+    return Number.isFinite(parsed) ? parsed : fallback
+  }
+
+  async function setupSignature(wrapper: HTMLElement) {
+    if (wrapper.dataset.ready === 'true') return
+    wrapper.dataset.ready = 'true'
+
+    const source = wrapper.dataset.src
+    if (!source) return
+
+    const url = new URL(source, window.location.href)
+    if (url.origin !== window.location.origin || !url.pathname.toLowerCase().endsWith('.svg'))
+      return
+
+    try {
+      const response = await fetch(url)
+      if (!response.ok) throw new Error(`Signature request failed: ${response.status}`)
+
+      const documentSource = new DOMParser().parseFromString(await response.text(), 'image/svg+xml')
+      if (documentSource.querySelector('parsererror')) throw new Error('Invalid signature SVG')
+
+      const sourceSvg = documentSource.querySelector('svg')
+      const sourcePaths = Array.from(documentSource.querySelectorAll('path[d]'))
+      if (!sourceSvg || sourcePaths.length === 0) throw new Error('Signature SVG has no paths')
+
+      const svg = document.createElementNS(SVG_NS, 'svg')
+      svg.setAttribute('viewBox', sourceSvg.getAttribute('viewBox') || '0 0 320 180')
+      svg.setAttribute('role', 'img')
+      svg.setAttribute('aria-label', wrapper.dataset.alt || 'Signature')
+      svg.setAttribute('fill', 'none')
+
+      const paths = sourcePaths.map((sourcePath) => {
+        const path = document.createElementNS(SVG_NS, 'path')
+        path.setAttribute('d', sourcePath.getAttribute('d') || '')
+        path.setAttribute('fill', 'none')
+        path.setAttribute('stroke', 'currentColor')
+        path.setAttribute('stroke-width', sourcePath.getAttribute('stroke-width') || '4')
+        path.setAttribute('stroke-linecap', sourcePath.getAttribute('stroke-linecap') || 'round')
+        path.setAttribute('stroke-linejoin', sourcePath.getAttribute('stroke-linejoin') || 'round')
+        path.dataset.duration = sourcePath.getAttribute('data-duration') || ''
+        path.dataset.sequence = sourcePath.getAttribute('seq') || ''
+        svg.append(path)
+        return path
+      })
+
+      paths.sort((left, right) => {
+        const leftSequence = parseNumber(left.dataset.sequence, Number.MAX_SAFE_INTEGER)
+        const rightSequence = parseNumber(right.dataset.sequence, Number.MAX_SAFE_INTEGER)
+        return leftSequence - rightSequence
+      })
+
+      wrapper.replaceChildren(svg)
+
+      const mode = wrapper.dataset.mode || 'once-on-view'
+      if (mode === 'static' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+      const drawDelay = parseNumber(wrapper.dataset.drawDelay, 200)
+      const rollbackDelay = parseNumber(wrapper.dataset.rollbackDelay, 80)
+      const loopPause = parseNumber(wrapper.dataset.loopPause, 2000)
+      const defaultDuration = parseNumber(wrapper.dataset.defaultDuration, 600)
+
+      const pathData = paths.map((path) => {
+        const length = path.getTotalLength()
+        const duration = parseNumber(path.dataset.duration, defaultDuration)
+        path.style.strokeDasharray = `${length} ${length}`
+        path.style.strokeDashoffset = `${length}`
+        return { path, length, duration }
+      })
+
+      async function draw() {
+        for (const [index, item] of pathData.entries()) {
+          item.path.style.transition = `stroke-dashoffset ${item.duration}ms ease-in-out`
+          item.path.style.strokeDashoffset = '0'
+          await wait(item.duration)
+          if (index < pathData.length - 1) await wait(drawDelay)
+        }
+      }
+
+      async function rollback() {
+        for (const [index, item] of [...pathData].reverse().entries()) {
+          const duration = Math.round(item.duration * 0.8)
+          item.path.style.transition = `stroke-dashoffset ${duration}ms ease-in-out`
+          item.path.style.strokeDashoffset = `${item.length}`
+          await wait(duration)
+          if (index < pathData.length - 1) await wait(rollbackDelay)
+        }
+      }
+
+      async function run() {
+        do {
+          await draw()
+          if (mode !== 'loop' || !wrapper.isConnected) return
+          await wait(loopPause)
+          await rollback()
+          await wait(Math.round(loopPause / 2))
+        } while (wrapper.isConnected)
+      }
+
+      if (mode === 'once-on-view') {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return
+            observer.disconnect()
+            void run()
+          },
+          { threshold: 0.5 }
+        )
+        observer.observe(wrapper)
+      } else {
+        void run()
+      }
+    } catch (error) {
+      wrapper.dataset.ready = 'false'
+      console.warn('Could not animate signature.', error)
+    }
+  }
+
+  function setupSignatures() {
+    document.querySelectorAll<HTMLElement>('[data-signature]').forEach((wrapper) => {
+      void setupSignature(wrapper)
+    })
+  }
+
+  setupSignatures()
+  document.addEventListener('astro:page-load', setupSignatures)
+</script>
+
+<style>
+  .signature-wrapper :global(svg) {
+    display: block;
+    height: auto;
+    width: 100%;
+    overflow: visible;
+  }
+</style>

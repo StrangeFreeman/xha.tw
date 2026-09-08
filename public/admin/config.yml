@@ -44,6 +44,91 @@ collections:
             widget: image
             required: false
             hint: 留空時使用 repo 內建頭像。
+      - name: about_signature
+        label: About Signature
+        file: src/data/about-signature.json
+        format: json
+        fields:
+          - label: 啟用簽名
+            name: enabled
+            widget: boolean
+            default: false
+          - { label: 標題, name: title, widget: string, default: Signature }
+          - label: URL 識別碼
+            name: slug
+            widget: string
+            default: signature
+            pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 只能使用小寫英文字母、數字與連字號]
+          - { label: 順序, name: order, widget: number, value_type: int, default: 60 }
+          - { label: 顯示標題, name: showHeading, widget: boolean, default: false }
+          - label: 簽名 SVG
+            name: src
+            widget: file
+            required: false
+            choose_url: false
+            hint: 請上傳由 path 線條組成的 SVG；留空時不會顯示。
+          - { label: 替代文字, name: alt, widget: string, default: xhA signature }
+          - label: 動畫模式
+            name: mode
+            widget: select
+            default: once-on-view
+            options:
+              - { label: 進入畫面時播放一次, value: once-on-view }
+              - { label: 循環播放, value: loop }
+              - { label: 靜態顯示, value: static }
+          - label: 對齊
+            name: align
+            widget: select
+            default: right
+            options:
+              - { label: 靠左, value: left }
+              - { label: 置中, value: center }
+              - { label: 靠右, value: right }
+          - {
+              label: 寬度（px）,
+              name: width,
+              widget: number,
+              value_type: int,
+              min: 80,
+              max: 640,
+              default: 160
+            }
+          - {
+              label: 每筆間隔（ms）,
+              name: drawDelay,
+              widget: number,
+              value_type: int,
+              min: 0,
+              max: 5000,
+              default: 200
+            }
+          - {
+              label: 回收間隔（ms）,
+              name: rollbackDelay,
+              widget: number,
+              value_type: int,
+              min: 0,
+              max: 5000,
+              default: 80
+            }
+          - {
+              label: 循環停留（ms）,
+              name: loopPause,
+              widget: number,
+              value_type: int,
+              min: 0,
+              max: 30000,
+              default: 2000
+            }
+          - {
+              label: 單筆時間（ms）,
+              name: defaultDuration,
+              widget: number,
+              value_type: int,
+              min: 50,
+              max: 10000,
+              default: 600
+            }
 
   - name: pages
     label: 頁面與導覽
@@ -226,6 +311,137 @@ collections:
       - { label: 順序, name: order, widget: number, value_type: int, default: 0 }
       - { label: 顯示, name: visible, widget: boolean, default: true }
       - { label: 內容, name: body, widget: markdown, required: false }
+
+  - name: about_cards
+    label: About Cards
+    label_singular: About Card
+    description: 適合顯示經歷、身份或需要邊框強調的內容。
+    folder: src/content/about/cards
+    create: true
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{title}} — 順序 {{order}}'
+    sortable_fields: [order, title]
+    view_filters:
+      - { label: 顯示中, field: visible, pattern: 'true' }
+      - { label: 已隱藏, field: visible, pattern: 'false' }
+    fields:
+      - { label: 標題, name: title, widget: string }
+      - { label: 副標題, name: subheading, widget: string, required: false }
+      - { label: 日期或補充文字, name: date, widget: string, required: false }
+      - label: URL 識別碼
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 只能使用小寫英文字母、數字與連字號]
+      - { label: 順序, name: order, widget: number, value_type: int, default: 0 }
+      - { label: 顯示, name: visible, widget: boolean, default: true }
+      - { label: 加入頁面目錄, name: showInTableOfContents, widget: boolean, default: false }
+      - { label: 內容, name: body, widget: markdown, required: false }
+
+  - name: about_collapses
+    label: About Collapses
+    label_singular: About Collapse
+    description: 適合放預設收合、由訪客自行展開的補充內容。
+    folder: src/content/about/collapses
+    create: true
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{title}} — 順序 {{order}}'
+    sortable_fields: [order, title]
+    view_filters:
+      - { label: 顯示中, field: visible, pattern: 'true' }
+      - { label: 已隱藏, field: visible, pattern: 'false' }
+    fields:
+      - { label: 標題, name: title, widget: string }
+      - label: URL 識別碼
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 只能使用小寫英文字母、數字與連字號]
+      - { label: 順序, name: order, widget: number, value_type: int, default: 0 }
+      - { label: 顯示, name: visible, widget: boolean, default: true }
+      - { label: 加入頁面目錄, name: showInTableOfContents, widget: boolean, default: false }
+      - { label: 展開後內容, name: body, widget: markdown, required: false }
+
+  - name: about_tool_groups
+    label: About Tool Grids
+    label_singular: About Tool Grid
+    description: 建立像參考網站 Tools 區塊的圖示卡片網格。
+    folder: src/content/about/tool-groups
+    create: true
+    extension: yml
+    format: yaml
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{title}} — 順序 {{order}}'
+    sortable_fields: [order, title]
+    view_filters:
+      - { label: 顯示中, field: visible, pattern: 'true' }
+      - { label: 已隱藏, field: visible, pattern: 'false' }
+    fields:
+      - { label: 標題, name: title, widget: string }
+      - { label: 區塊說明, name: description, widget: text, required: false }
+      - label: URL 識別碼
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 只能使用小寫英文字母、數字與連字號]
+      - { label: 順序, name: order, widget: number, value_type: int, default: 0 }
+      - { label: 顯示, name: visible, widget: boolean, default: true }
+      - { label: 加入頁面目錄, name: showInTableOfContents, widget: boolean, default: false }
+      - label: 工具
+        name: tools
+        widget: list
+        min: 1
+        summary: '{{fields.name}} — {{fields.description}}'
+        fields:
+          - { label: 名稱, name: name, widget: string }
+          - { label: 說明, name: description, widget: string, required: false }
+          - { label: 網址, name: href, widget: string }
+          - { label: 圖示, name: icon, widget: image, choose_url: true }
+          - label: 深色模式圖示
+            name: darkIcon
+            widget: image
+            choose_url: true
+            required: false
+            hint: 留空時沿用同一張圖示。
+
+  - name: about_timelines
+    label: About Timelines
+    label_singular: About Timeline
+    description: 顯示網站歷史、經歷或其他按時間排列的事件。
+    folder: src/content/about/timelines
+    create: true
+    extension: yml
+    format: yaml
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{title}} — 順序 {{order}}'
+    sortable_fields: [order, title]
+    view_filters:
+      - { label: 顯示中, field: visible, pattern: 'true' }
+      - { label: 已隱藏, field: visible, pattern: 'false' }
+    fields:
+      - { label: 標題, name: title, widget: string }
+      - { label: 區塊說明, name: description, widget: text, required: false }
+      - label: URL 識別碼
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 只能使用小寫英文字母、數字與連字號]
+      - { label: 順序, name: order, widget: number, value_type: int, default: 0 }
+      - { label: 顯示, name: visible, widget: boolean, default: true }
+      - label: 時間點
+        name: events
+        widget: list
+        min: 1
+        summary: '{{fields.date}} — {{fields.content}}'
+        fields:
+          - { label: 日期, name: date, widget: string }
+          - { label: 內容, name: content, widget: text }
+          - { label: 相關網址, name: link, widget: string, required: false }
+          - { label: 連結文字, name: linkLabel, widget: string, required: false }
 
   - name: project_categories
     label: Projects 分類

@@ -1,21 +1,86 @@
 ---
 import { getCollection, render } from 'astro:content'
-import { cmsPage } from '@/cms-config'
+import { cmsPage, cmsSignature } from '@/cms-config'
 
+import { Card, Collapse } from 'astro-pure/user'
 import PageLayout from '@/layouts/CommonPage.astro'
+import AboutTimeline from '@/components/about/AboutTimeline.astro'
+import Signature from '@/components/about/Signature.astro'
+import ToolSection from '@/components/about/ToolSection.astro'
 
 if (!cmsPage.about.enabled) return Astro.redirect('/404')
 
-const sections = await Promise.all(
+const markdownBlocks = await Promise.all(
   (await getCollection('aboutSections'))
     .filter(({ data }) => data.visible)
-    .sort((a, b) => a.data.order - b.data.order)
-    .map(async (entry) => ({ entry, ...(await render(entry)) }))
+    .map(async (entry) => ({
+      kind: 'markdown' as const,
+      order: entry.data.order,
+      entry,
+      ...(await render(entry))
+    }))
 )
-const headings = sections.flatMap(({ entry, headings: nestedHeadings }) => [
-  { depth: 2, slug: entry.data.slug, text: entry.data.title },
-  ...nestedHeadings
-])
+const cardBlocks = await Promise.all(
+  (await getCollection('aboutCards'))
+    .filter(({ data }) => data.visible)
+    .map(async (entry) => ({
+      kind: 'card' as const,
+      order: entry.data.order,
+      entry,
+      ...(await render(entry))
+    }))
+)
+const collapseBlocks = await Promise.all(
+  (await getCollection('aboutCollapses'))
+    .filter(({ data }) => data.visible)
+    .map(async (entry) => ({
+      kind: 'collapse' as const,
+      order: entry.data.order,
+      entry,
+      ...(await render(entry))
+    }))
+)
+const toolBlocks = (await getCollection('aboutToolGroups'))
+  .filter(({ data }) => data.visible)
+  .map((entry) => ({ kind: 'tools' as const, order: entry.data.order, entry }))
+const timelineBlocks = (await getCollection('aboutTimelines'))
+  .filter(({ data }) => data.visible)
+  .map((entry) => ({ kind: 'timeline' as const, order: entry.data.order, entry }))
+const signatureBlocks =
+  cmsSignature.enabled && cmsSignature.src
+    ? [{ kind: 'signature' as const, order: cmsSignature.order, data: cmsSignature }]
+    : []
+
+const blocks = [
+  ...markdownBlocks,
+  ...cardBlocks,
+  ...collapseBlocks,
+  ...toolBlocks,
+  ...timelineBlocks,
+  ...signatureBlocks
+].sort((a, b) => a.order - b.order)
+
+const headings = blocks.flatMap((block) => {
+  if (block.kind === 'markdown')
+    return [
+      { depth: 2, slug: block.entry.data.slug, text: block.entry.data.title },
+      ...block.headings
+    ]
+  if (block.kind === 'card' || block.kind === 'collapse')
+    return [
+      ...(block.entry.data.showInTableOfContents
+        ? [{ depth: 2, slug: block.entry.data.slug, text: block.entry.data.title }]
+        : []),
+      ...block.headings
+    ]
+  if (block.kind === 'tools')
+    return block.entry.data.showInTableOfContents
+      ? [{ depth: 2, slug: block.entry.data.slug, text: block.entry.data.title }]
+      : []
+  if (block.kind === 'timeline')
+    return [{ depth: 2, slug: block.entry.data.slug, text: block.entry.data.title }]
+  return block.data.showHeading ? [{ depth: 2, slug: block.data.slug, text: block.data.title }] : []
+})
 ---
 
 <PageLayout
@@ -26,11 +91,80 @@ const headings = sections.flatMap(({ entry, headings: nestedHeadings }) => [
   comment={cmsPage.about.comment}
 >
   {
-    sections.map(({ entry, Content }) => (
-      <section>
-        <h2 id={entry.data.slug}>{entry.data.title}</h2>
-        <Content />
-      </section>
-    ))
+    blocks.map((block) => {
+      if (block.kind === 'markdown') {
+        const Content = block.Content
+        return (
+          <section>
+            <h2 id={block.entry.data.slug}>{block.entry.data.title}</h2>
+            <Content />
+          </section>
+        )
+      }
+
+      if (block.kind === 'card') {
+        const Content = block.Content
+        return (
+          <section id={block.entry.data.slug}>
+            <Card
+              heading={block.entry.data.title}
+              subheading={block.entry.data.subheading}
+              date={block.entry.data.date}
+            >
+              <div class='prose max-w-none'>
+                <Content />
+              </div>
+            </Card>
+          </section>
+        )
+      }
+
+      if (block.kind === 'collapse') {
+        const Content = block.Content
+        return (
+          <section id={block.entry.data.slug}>
+            <Collapse title={block.entry.data.title}>
+              <div class='prose max-w-none'>
+                <Content />
+              </div>
+            </Collapse>
+          </section>
+        )
+      }
+
+      if (block.kind === 'tools')
+        return (
+          <section id={block.entry.data.slug}>
+            {block.entry.data.description && <p>{block.entry.data.description}</p>}
+            <ToolSection title={block.entry.data.title} tools={block.entry.data.tools} />
+          </section>
+        )
+
+      if (block.kind === 'timeline')
+        return (
+          <section>
+            <h2 id={block.entry.data.slug}>{block.entry.data.title}</h2>
+            {block.entry.data.description && <p>{block.entry.data.description}</p>}
+            <AboutTimeline events={block.entry.data.events} />
+          </section>
+        )
+
+      return (
+        <section>
+          {block.data.showHeading && <h2 id={block.data.slug}>{block.data.title}</h2>}
+          <Signature
+            src={block.data.src}
+            alt={block.data.alt}
+            mode={block.data.mode}
+            align={block.data.align}
+            width={block.data.width}
+            drawDelay={block.data.drawDelay}
+            rollbackDelay={block.data.rollbackDelay}
+            loopPause={block.data.loopPause}
+            defaultDuration={block.data.defaultDuration}
+          />
+        </section>
+      )
+    })
   }
 </PageLayout>

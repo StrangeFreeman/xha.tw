@@ -1,5 +1,6 @@
 import { z } from 'astro/zod'
 
+import signatureData from './data/about-signature.json'
 import aboutPage from './data/pages/about.json'
 import blogPage from './data/pages/blog.json'
 import docsPage from './data/pages/docs.json'
@@ -43,10 +44,31 @@ const pageSchema = z.object({
     .transform((value) => value ?? '')
 })
 
+const signatureSchema = z.object({
+  enabled: z.boolean(),
+  title: z.string().min(1).max(80),
+  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  order: z.number().int(),
+  showHeading: z.boolean(),
+  src: z
+    .string()
+    .nullish()
+    .transform((value) => value ?? ''),
+  alt: z.string().max(120),
+  mode: z.enum(['static', 'once-on-view', 'loop']),
+  align: z.enum(['left', 'center', 'right']),
+  width: z.number().int().min(80).max(640),
+  drawDelay: z.number().int().min(0).max(5000),
+  rollbackDelay: z.number().int().min(0).max(5000),
+  loopPause: z.number().int().min(0).max(30000),
+  defaultDuration: z.number().int().min(50).max(10000)
+})
+
 export type PageKey = z.infer<typeof pageKeySchema>
 export type CmsPage = z.infer<typeof pageSchema>
 
 export const cmsSite = siteSchema.parse(siteData)
+export const cmsSignature = signatureSchema.parse(signatureData)
 
 export const cmsPages = pageSchema
   .array()

@@ -48,6 +48,11 @@ const sectionBase = z.object({
   visible: z.boolean().default(true)
 })
 
+const optionalUrl = z
+  .union([z.url(), z.literal(''), z.null()])
+  .optional()
+  .transform((value) => value || undefined)
+
 const homeSections = defineCollection({
   loader: glob({ base: './src/content/sections/home', pattern: '**/*.{md,mdx}' }),
   schema: sectionBase.extend({
@@ -61,6 +66,61 @@ const homeSections = defineCollection({
 const aboutSections = defineCollection({
   loader: glob({ base: './src/content/sections/about', pattern: '**/*.{md,mdx}' }),
   schema: sectionBase
+})
+
+const aboutCards = defineCollection({
+  loader: glob({ base: './src/content/about/cards', pattern: '**/*.{md,mdx}' }),
+  schema: sectionBase.extend({
+    subheading: z.string().max(160).default(''),
+    date: z.string().max(80).default(''),
+    showInTableOfContents: z.boolean().default(false)
+  })
+})
+
+const aboutCollapses = defineCollection({
+  loader: glob({ base: './src/content/about/collapses', pattern: '**/*.{md,mdx}' }),
+  schema: sectionBase.extend({
+    showInTableOfContents: z.boolean().default(false)
+  })
+})
+
+const aboutToolGroups = defineCollection({
+  loader: glob({ base: './src/content/about/tool-groups', pattern: '**/*.{yml,yaml,json}' }),
+  schema: sectionBase.extend({
+    description: z.string().max(240).default(''),
+    showInTableOfContents: z.boolean().default(false),
+    tools: z.array(
+      z.object({
+        name: z.string().min(1).max(80),
+        description: z.string().max(120).default(''),
+        href: z.url(),
+        icon: z.string().min(1),
+        darkIcon: z
+          .string()
+          .nullish()
+          .transform((value) => value || undefined)
+      })
+    )
+  })
+})
+
+const aboutTimelines = defineCollection({
+  loader: glob({ base: './src/content/about/timelines', pattern: '**/*.{yml,yaml,json}' }),
+  schema: sectionBase.extend({
+    description: z.string().max(240).default(''),
+    events: z.array(
+      z.object({
+        date: z.string().min(1).max(80),
+        content: z.string().min(1).max(240),
+        link: optionalUrl,
+        linkLabel: z
+          .string()
+          .max(80)
+          .nullish()
+          .transform((value) => value || undefined)
+      })
+    )
+  })
 })
 
 const projectSections = defineCollection({
@@ -149,6 +209,10 @@ export const collections = {
   blog,
   homeSections,
   aboutSections,
+  aboutCards,
+  aboutCollapses,
+  aboutToolGroups,
+  aboutTimelines,
   projectSections,
   linkSections,
   projectCategories,

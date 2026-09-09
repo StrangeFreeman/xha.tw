@@ -102,6 +102,16 @@ jobs:
           printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           ssh-keygen -y -f ~/.ssh/id_ed25519 > /dev/null
 
+      # Temporary diagnostic: remove after the VPS connectivity issue is resolved.
+      - name: Show runner public IPv4
+        continue-on-error: true
+        run: |
+          printf 'UTC: '
+          date -u '+%Y-%m-%dT%H:%M:%SZ'
+          printf 'Runner public IPv4: '
+          curl -4 --fail --silent --show-error --max-time 15 https://api.ipify.org
+          printf '\n'
+
       - name: Deploy to VPS
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}

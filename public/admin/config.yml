@@ -6,11 +6,12 @@ backend:
   auth_endpoint: auth
   site_domain: xha.tw
   squash_merges: true
+  preview_context: deploy-preview
 
 publish_mode: editorial_workflow
 site_url: https://xha.tw
 display_url: https://xha.tw
-show_preview_links: false
+show_preview_links: true
 local_backend: true
 
 slug:
@@ -26,6 +27,7 @@ collections:
     label: 網站設定
     files:
       - name: site
+        preview_path: ''
         label: 基本資料
         file: src/data/site.json
         format: json
@@ -51,6 +53,7 @@ collections:
     label: 頁面與導覽
     files:
       - name: home
+        preview_path: ''
         label: 首頁
         file: src/data/pages/home.json
         format: json
@@ -202,6 +205,8 @@ collections:
                   - label: 時間點
                     name: events
                     widget: list
+                    add_to_top: true
+                    hint: 新增時間點會放在最上方，可拖曳調整順序；日期也可填入「???」。
                     required: false
                     summary: '{{fields.date}} · {{fields.content}}'
                     fields:
@@ -301,6 +306,7 @@ collections:
                       - { label: 網址, name: href, widget: string }
 
       - name: blog
+        preview_path: blog
         label: Blog
         file: src/data/pages/blog.json
         format: json
@@ -319,6 +325,7 @@ collections:
             { label: Content Blocks, name: blocks, widget: hidden, default: [] }
           ]
       - name: docs
+        preview_path: docs
         label: Docs
         file: src/data/pages/docs.json
         format: json
@@ -337,6 +344,7 @@ collections:
             { label: Content Blocks, name: blocks, widget: hidden, default: [] }
           ]
       - name: projects
+        preview_path: projects
         label: Projects
         file: src/data/pages/projects.json
         format: json
@@ -410,6 +418,7 @@ collections:
                               - { label: 網址, name: href, widget: string }
 
       - name: links
+        preview_path: links
         label: Links
         file: src/data/pages/links.json
         format: json
@@ -513,6 +522,7 @@ collections:
                     }
 
       - name: about
+        preview_path: about
         label: About
         file: src/data/pages/about.json
         format: json
@@ -643,6 +653,7 @@ collections:
                     }
 
   - name: blog
+    preview_path: blog/{{slug}}
     label: Blog
     label_singular: Blog
     folder: src/content/blog
@@ -734,6 +745,7 @@ collections:
           ]
 
   - name: docs
+    preview_path: docs/{{slug}}
     label: Docs
     label_singular: Doc
     description: Docs 頁面預設停用；準備好內容後再到「頁面與導覽」開啟。

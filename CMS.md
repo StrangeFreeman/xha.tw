@@ -72,6 +72,18 @@ CMS 上傳的檔案會存到 `public/uploads`，公開網址為 `/uploads/...`�
 
 Signature 請上傳包含 `<path d="...">` 的 SVG，並保留 `viewBox`。網站只讀取筆畫路徑，不執行 SVG 內的 script、事件或外部資源。可用 `seq="1"`、`seq="2"` 指定筆畫順序，用 `data-duration="600"` 設定單筆動畫時間（毫秒）。只有填色、沒有 path 線條的圖片可靜態顯示，但無法產生手寫動畫。
 
-## 在本機修改
+## 預覽與時間軸
+
+Timeline 的「Add 時間點」會把新項目插入最上方，也就是 `???・未來精彩繼續` 的上面。頁面區塊與 Blog／Docs 內文的 Timeline 都採用相同行為。仍可拖曳調整順序；日期是自由文字，不會自動排序。
+
+編輯器右側會即時顯示時間軸、Markdown、卡片、分頁等區塊，未儲存的變更也能預覽。停用的區塊不顯示，空時間軸會顯示提示。簽名動畫、最新文章清單等需要完整網站的功能，請使用部署預覽確認。
+
+「Check for Preview」用於已儲存的草稿：儲存後等待 GitHub 的 `deploy-preview` 建置完成，再開啟該草稿專屬的網站預覽。建置失敗時連結會指向工作流程紀錄。每份草稿各有網址，不會互相覆蓋；關閉或發布草稿後會清理其預覽。
+
+`preview.xha.tw` 顯示 main 的預覽版本；草稿按鈕會開啟該次部署的 Pages 網址。兩者都需要 Cloudflare Access 登入，僅允許管理員設定的帳號。預覽包含 Blog／Docs 草稿與停用頁面，並停用留言與瀏覽計數；正式建置繼續排除草稿。
+
+本機可執行 `bun run test:cms` 與 `bun run build:preview`。產物位於 `dist-preview/`，與正式網站的 `dist/` 分開。私人預覽部署設定見 [DEPLOYMENT.md](DEPLOYMENT.md#private-cms-previews)。
+
+## 在本機修改內容
 
 頁面內容位於 `src/data/pages/*.json`，Blog 與 Docs 位於 `src/content/`。本機提交並推送到 `main` 後，部署流程與 CMS 發布相同。若 CMS 和本機同時修改同一檔案，請先同步最新的 `main`，避免合併衝突。

@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+import { isPreview } from '@/utils/preview'
 
 const robotsTxt = `
 User-agent: GPTBot
@@ -13,7 +14,7 @@ Sitemap: ${new URL('sitemap-index.xml', import.meta.env.SITE).href}
 `.trim()
 
 export const GET: APIRoute = () =>
-  new Response(robotsTxt, {
+  new Response(isPreview ? 'User-agent: *\nDisallow: /' : robotsTxt, {
     headers: {
       'Content-Type': 'text/plain; charset=utf-8'
     }

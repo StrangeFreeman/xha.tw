@@ -60,6 +60,9 @@
           label: '時間點',
           name: 'events',
           widget: 'list',
+          add_to_top: true,
+          hint: '新增時間點會放在最上方，可拖曳調整順序；日期也可填入「???」。',
+          summary: '{{fields.date}} · {{fields.content}}',
           min: 1,
           fields: [
             { label: '日期', name: 'date', widget: 'string' },
@@ -154,6 +157,9 @@
       toBlock: (data) =>
         `<CmsBlock kind="${definition.kind}" data="${encodeURIComponent(JSON.stringify(data))}" />`,
       toPreview: (data) => {
+        if (window.XhaPreview) {
+          return window.XhaPreview.block({ ...data, type: definition.kind, showHeading: false })
+        }
         const title = data.title || data.description || definition.label
         return `<div style="border:1px solid #d1d5db;border-radius:8px;padding:12px"><strong>${escapeHtml(definition.label)}</strong><div>${escapeHtml(title)}</div></div>`
       }

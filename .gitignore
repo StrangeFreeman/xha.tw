@@ -1,5 +1,8 @@
 ### Astro ###
 dist/
+dist-preview/
+.wrangler/
+.dev.vars*
 .astro/
 
 ### Vercel ###

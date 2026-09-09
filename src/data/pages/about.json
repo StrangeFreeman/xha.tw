@@ -65,7 +65,8 @@
       "showHeading": true,
       "showInToc": true,
       "id": "about-blog",
-      "title": "About Blog"
+      "title": "About Blog",
+      "content": "這網站會放一點點 self-hosting、資安 或是其他(? 的分享和紀錄，如果剛好解惑或是激發您的靈感，我很高興能把不同的可能性帶進你的生活。"
     },
     {
       "type": "timeline",

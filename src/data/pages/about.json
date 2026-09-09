@@ -9,8 +9,9 @@
       "visible": true,
       "showHeading": false,
       "showInToc": false,
-      "id": "intro",
-      "content": "Developer / Explorer\n\nHi, I'm xhA ( xiao hong A / 小紅A )<br>Studying hard to find a job. Majoring in cybersecurity, tinkering with self-hosted services and homelabs. I enjoy taking on challenges, patiently exploring complex technologies, and especially love sharing what I learn along the way.\n\n\\-- 舞台這麼大，我想乘著夢想站上去看看"
+      "id": "more-about-me",
+      "content": "Developer / Explorer\n\nHi, I'm xhA ( xiao hong A / 小紅A )<br>Studying hard to find a job. Majoring in cybersecurity, tinkering with self-hosted services and homelabs. I enjoy taking on challenges, patiently exploring complex technologies, and especially love sharing what I learn along the way.\n\n\\-- 舞台這麼大，我想乘著夢想站上去看看",
+      "title": "more-about-me"
     },
     {
       "buttonLabel": "",
@@ -59,13 +60,21 @@
       ]
     },
     {
-      "type": "timeline",
-      "id": "about-blog",
-      "title": "About Blog",
+      "type": "rich-text",
       "visible": true,
       "showHeading": true,
       "showInToc": true,
-      "description": "",
+      "id": "about-blog",
+      "title": "About Blog"
+    },
+    {
+      "type": "timeline",
+      "id": "about-blog-timeline",
+      "title": "about-blog-timeline",
+      "visible": true,
+      "showHeading": false,
+      "showInToc": false,
+      "description": "這是說明 blog 建立或是遇到重大事件的時間線整理",
       "events": [
         {
           "date": "???",

@@ -1,13 +1,13 @@
 {
-  "key": "blog",
-  "title": "Blog",
   "navigationLabel": "Blog",
-  "path": "/blog",
-  "navigationOrder": 10,
   "enabled": true,
-  "showInNavigation": true,
+  "path": "/blog",
   "view": false,
-  "comment": false,
-  "description": "文章與技術筆記",
-  "blocks": []
+  "blocks": [],
+  "showInNavigation": true,
+  "title": "Blog",
+  "navigationOrder": 10,
+  "description": "文章與筆記",
+  "key": "blog",
+  "comment": false
 }

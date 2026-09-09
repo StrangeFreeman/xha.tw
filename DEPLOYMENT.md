@@ -132,9 +132,71 @@ After deployment, `https://auth.xha.tw/` should say that the OAuth Worker is rea
 record for `auth.xha.tw`; Wrangler configures it as the Worker's Cloudflare custom domain. It must
 not point at the VPS unless the OAuth proxy is intentionally moved there.
 
-The first CMS version manages regular `.md` content only. Site-wide TypeScript settings in
-`src/site.config.ts` and advanced `.mdx` entries remain code-managed so the CMS cannot accidentally
-remove imports or Pure component markup.
+The CMS manages page JSON and Blog/Docs MDX, including encoded `CmsBlock` components.
+Site-wide TypeScript settings in `src/site.config.ts` remain code-managed.
 
 For local-only CMS testing, run Decap's local proxy and open `/admin/`; `local_backend` is already
 enabled in `public/admin/config.yml`.
+
+## Private CMS previews
+
+Previews use the separate Cloudflare Pages project `xha-preview`, not VPS storage.
+`preview.xha.tw` is the main preview, with a proxied CNAME to `xha-preview.pages.dev`.
+CMS pull requests use `cms-pr-<number>` branches and immutable deployment URLs.
+
+Configure one Cloudflare Access self-hosted application covering **all three** destinations:
+
+- `preview.xha.tw`
+- `xha-preview.pages.dev`
+- `*.xha-preview.pages.dev`
+
+Use one Allow policy with exact administrator email addresses, one-time PIN login, and no
+Everyone, Bypass, or Service Auth rules. Hide the application from the launcher and enable
+HttpOnly cookies. Keep email addresses out of the repository. DNS and certificate records are
+public; Access prevents visitors from viewing the site, rather than hiding the hostname itself.
+
+In **both** Pages production and preview runtime environments configure:
+
+| Binding              | Value                                                     |
+| -------------------- | --------------------------------------------------------- |
+| `ACCESS_TEAM_DOMAIN` | The HTTPS Cloudflare Access team domain                   |
+| `ACCESS_AUD`         | The Access application's audience tag                     |
+| `ACCESS_EMAILS`      | Secret containing comma-separated allowed email addresses |
+
+Set Pages Functions failure mode to **fail closed** (`fail_open: false`). The request handler
+verifies signed Access JWTs, issuer, audience, expiry, and exact email before serving any HTML
+or asset. Missing configuration, missing/invalid tokens, and unavailable signing keys deny
+access. `_routes.json` includes every route without exclusions. `/admin` is unavailable on
+preview deployments. Responses use no-store and noindex headers; those headers supplement
+authentication and are not the access control themselves.
+
+The zone's managed robots feature may answer `/robots.txt` at Cloudflare's edge before the
+application runs. Its public generic crawler policy contains no preview content; the deployment
+privacy check uses the sitemap as well as pages and assets, which must all require Access.
+
+Create a GitHub environment named `preview` with:
+
+| Kind     | Name                       | Value                                           |
+| -------- | -------------------------- | ----------------------------------------------- |
+| Variable | `CLOUDFLARE_ACCOUNT_ID`    | Pages account ID                                |
+| Variable | `CLOUDFLARE_PAGES_PROJECT` | `xha-preview`                                   |
+| Secret   | `CLOUDFLARE_API_TOKEN`     | Account-scoped token with Cloudflare Pages Edit |
+
+Use a dedicated scoped API token; never put a Wrangler OAuth token into GitHub or commit any
+credential. Environment branch rules must permit main and same-repository CMS pull requests.
+The workflow must be present on main before CMS draft deployment can use its trusted scripts.
+
+`.github/workflows/preview.yml` builds without deployment credentials, then a separate job
+checks out the trusted base revision and replaces the artifact's worker and routing files.
+Deployment credentials are available only to the deploy step. Fork pull requests are excluded.
+The workflow publishes the `deploy-preview` commit status consumed by Decap, checks anonymous
+access before marking success, skips obsolete drafts, removes previous PR snapshots after
+successful updates, and removes all PR snapshots when the PR closes. Build artifacts expire
+after one day. Repository branches and Actions artifacts retain the repository's own visibility;
+Access only protects the hosted preview. Do not store secrets in CMS content.
+
+Validation: run `bun run test:cms`, `bun run build`, and `bun run build:preview`. Anonymous
+requests to the custom domain, project root, deployment URLs, pages, and assets must return
+403 or redirect to Access. Sign in as an allowed administrator to verify full page rendering.
+When locally deleting the last temporary content fixture, Astro may retain its content cache;
+remove `node_modules/.astro/data-store.json` before rebuilding if that deleted entry persists.

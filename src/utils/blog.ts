@@ -1,12 +1,13 @@
 import type { CollectionEntry } from 'astro:content'
 import { getCollection } from 'astro:content'
+import { isPreview } from './preview'
 
 export type BlogEntry = CollectionEntry<'blog'>
 
 export const prod = import.meta.env.PROD
 
 export async function getBlogCollection(): Promise<BlogEntry[]> {
-  return getCollection('blog', ({ data }) => (prod ? !data.draft : true))
+  return getCollection('blog', ({ data }) => (prod && !isPreview ? !data.draft : true))
 }
 
 export function sortMDByDate(collections: BlogEntry[]): BlogEntry[] {

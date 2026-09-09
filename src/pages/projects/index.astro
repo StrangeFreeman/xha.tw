@@ -1,11 +1,12 @@
 ---
 import { cmsPage } from '@/cms-config'
+import { isPreview } from '@/utils/preview'
 
 import PageLayout from '@/layouts/CommonPage.astro'
 import PageBlocks from '@/components/blocks/PageBlocks.astro'
 import { getBlockHeadings } from '@/utils/page-blocks'
 
-if (!cmsPage.projects.enabled) return Astro.redirect('/404')
+if (!cmsPage.projects.enabled && !isPreview) return Astro.redirect('/404')
 const headings = getBlockHeadings(cmsPage.projects.blocks)
 ---
 

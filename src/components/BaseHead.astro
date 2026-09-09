@@ -4,6 +4,7 @@ import config from 'virtual:config'
 
 import type { SiteMeta } from 'astro-pure/types'
 import { prod } from '@/utils/blog'
+import { isPreview } from '@/utils/preview'
 
 type Props = SiteMeta
 
@@ -15,6 +16,7 @@ const socialImageURL = new URL(ogImage ? ogImage : config.socialCard, Astro.url)
 ---
 
 <meta charset='utf-8' />
+{isPreview && <meta name='robots' content='noindex, nofollow, noarchive' />}
 <meta
   content='width=device-width, initial-scale=1.0, shrink-to-fit=no, viewport-fit=cover'
   name='viewport'

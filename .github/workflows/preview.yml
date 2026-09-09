@@ -1,0 +1,165 @@
+name: Private CMS preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cms-preview-${{ github.event.pull_request.number || 'main' }}
+  cancel-in-progress: false
+
+jobs:
+  pending:
+    if: >-
+      github.event_name == 'pull_request' && github.event.action != 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.event.pull_request.head.ref, 'cms/')
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+    steps:
+      - uses: actions/github-script@v8
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({ ...context.repo,
+              sha: context.payload.pull_request.head.sha, context: 'deploy-preview', state: 'pending',
+              description: 'Building private preview',
+              target_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}` });
+
+  build:
+    needs: pending
+    if: >-
+      always() && github.event.action != 'closed' &&
+      (github.event_name != 'pull_request' ||
+       (github.event.pull_request.head.repo.full_name == github.repository &&
+        startsWith(github.event.pull_request.head.ref, 'cms/')))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: bun run test:cms
+      - run: bun run build:preview
+      - uses: actions/upload-artifact@v4
+        with:
+          name: private-preview
+          path: dist-preview/
+          retention-days: 1
+          if-no-files-found: error
+
+  deploy:
+    needs: build
+    if: always() && needs.build.result == 'success'
+    runs-on: ubuntu-latest
+    environment: preview
+    permissions:
+      contents: read
+      statuses: write
+      pull-requests: read
+    env:
+      PREVIEW_PR: ${{ github.event.pull_request.number }}
+      PREVIEW_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      # Never execute PR-supplied code in the job holding deployment credentials.
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.base.sha || github.sha }}
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile --ignore-scripts
+      - uses: actions/download-artifact@v4
+        with:
+          name: private-preview
+          path: dist-preview/
+      - run: bun run preview:protect
+      - name: Skip stale or closed drafts
+        id: current
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const number = Number(process.env.PREVIEW_PR);
+            if (!number) { core.setOutput('deploy', 'true'); return; }
+            const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: number });
+            core.setOutput('deploy', String(pr.state === 'open' && pr.head.sha === process.env.PREVIEW_SHA));
+      - name: Deploy protected preview
+        if: steps.current.outputs.deploy == 'true'
+        id: pages
+        run: bun preview/deploy.mjs
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      - name: Publish Decap preview status
+        if: always() && steps.current.outputs.deploy != 'false'
+        uses: actions/github-script@v8
+        env:
+          DEPLOY_RESULT: ${{ steps.pages.outcome }}
+          PREVIEW_URL: ${{ steps.pages.outputs.url }}
+        with:
+          script: |
+            const success = process.env.DEPLOY_RESULT === 'success';
+            await github.rest.repos.createCommitStatus({
+              ...context.repo, sha: process.env.PREVIEW_SHA, context: 'deploy-preview',
+              state: success ? 'success' : 'failure',
+              description: success ? 'Private preview ready — sign in with Cloudflare Access' : 'Private preview failed; check workflow logs',
+              target_url: success ? process.env.PREVIEW_URL : `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
+
+  build-failure:
+    needs: build
+    if: always() && needs.build.result == 'failure' && github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+    steps:
+      - uses: actions/github-script@v8
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({ ...context.repo,
+              sha: context.payload.pull_request.head.sha, context: 'deploy-preview', state: 'failure',
+              description: 'Preview build failed; check workflow logs',
+              target_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}` });
+
+  cleanup:
+    if: >-
+      github.event.action == 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.event.pull_request.head.ref, 'cms/')
+    runs-on: ubuntu-latest
+    environment: preview
+    permissions:
+      contents: read
+      statuses: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun preview/cleanup.mjs
+        env:
+          PREVIEW_PR: ${{ github.event.pull_request.number }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      - uses: actions/github-script@v8
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({ ...context.repo,
+              sha: context.payload.pull_request.head.sha, context: 'deploy-preview', state: 'error',
+              description: 'Draft closed; private preview removed' });

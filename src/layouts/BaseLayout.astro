@@ -3,6 +3,7 @@ import { Footer, Header, ThemeProvider } from 'astro-pure/components/basic'
 import type { SiteMeta } from 'astro-pure/types'
 import BaseHead from '@/components/BaseHead.astro'
 import config from '@/site-config'
+import { isPreview } from '@/utils/preview'
 
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseLayout /> component.
@@ -42,6 +43,7 @@ const {
       class='w-full max-w-[70rem] min-h-[100dvh] flex flex-col justify-between'
     >
       <Header />
+      {isPreview && <p role='status' class='rounded-lg border p-3 text-sm'>私人草稿預覽 · 尚未發布的內容，僅供授權使用者檢視。</p>}
       <div class='flex-1 w-full'>
         <slot />
       </div>

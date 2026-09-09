@@ -2,6 +2,7 @@
 import type { GetStaticPaths, Page } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 import { cmsPage } from '@/cms-config'
+import { isPreview } from '@/utils/preview'
 
 import { Paginator, PostPreview } from 'astro-pure/components/pages'
 import { Button, Icon } from 'astro-pure/user'
@@ -12,7 +13,7 @@ import config from '@/site-config'
 export const prerender = true
 
 export const getStaticPaths = (async ({ paginate }) => {
-  if (!cmsPage.blog.enabled) return []
+  if (!cmsPage.blog.enabled && !isPreview) return []
   const collections = sortMDByDate(await getBlogCollection())
   const uniqueTags = getUniqueTagsWithCount(collections).map(([tag]) => tag)
   const collectionsCount = collections.length

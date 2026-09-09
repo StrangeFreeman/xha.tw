@@ -1,0 +1,237 @@
+:root {
+  color-scheme: light;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+  color: #303541;
+  background: #fff;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 24px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.xha-preview {
+  max-width: 860px;
+  margin: auto;
+}
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.35;
+  font-weight: 600;
+}
+h1 {
+  font-size: 2rem;
+  margin: 24px 0 16px;
+}
+h2 {
+  font-size: 1.35rem;
+  margin: 0 0 16px;
+}
+h3,
+h4 {
+  margin: 12px 0 8px;
+}
+a {
+  color: #3866c7;
+  text-underline-offset: 3px;
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+pre {
+  overflow: auto;
+  padding: 16px;
+  background: #f3f4f6;
+  border-radius: 8px;
+}
+blockquote {
+  margin-left: 0;
+  padding-left: 16px;
+  border-left: 3px solid #cbd5e1;
+}
+.preview-banner {
+  padding: 8px 12px;
+  border: 1px solid #cbdcf4;
+  border-radius: 8px;
+  color: #365780;
+  background: #f3f7fd;
+  font-size: 12px;
+}
+.preview-block {
+  margin: 32px 0;
+}
+.preview-note {
+  padding: 12px 16px;
+  color: #657084;
+  background: #f6f7f9;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.preview-text {
+  white-space: pre-wrap;
+}
+p:empty {
+  display: none;
+}
+.preview-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e0e4eb;
+  font-size: 13px;
+}
+.preview-timeline {
+  padding: 0;
+  margin: 20px 0;
+  list-style: none;
+}
+.preview-timeline li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  column-gap: 18px;
+  margin: 0;
+  padding: 0 0 24px 28px;
+}
+.preview-timeline li::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 8px;
+  width: 11px;
+  height: 11px;
+  border: 2px solid #7a8799;
+  border-radius: 50%;
+  background: #fff;
+  z-index: 1;
+}
+.preview-timeline li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 18px;
+  bottom: -8px;
+  width: 3px;
+  background: #e0e5ed;
+}
+.preview-date {
+  font:
+    13px/1.8 ui-monospace,
+    monospace;
+  text-align: right;
+  color: #657084;
+}
+.preview-event {
+  min-width: 0;
+}
+.preview-event a {
+  margin-left: 8px;
+}
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+.preview-card {
+  padding: 16px;
+  border: 1px solid #e0e4eb;
+  border-radius: 12px;
+}
+.preview-card img {
+  max-height: 150px;
+  object-fit: contain;
+}
+.preview-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.preview-button,
+.preview-pill {
+  display: inline-block;
+  padding: 5px 12px;
+  border: 1px solid #d4dbe6;
+  border-radius: 8px;
+  text-decoration: none;
+}
+.preview-pill {
+  border-radius: 24px;
+  background: #f6f7f9;
+}
+details {
+  padding: 12px 16px;
+  border: 1px solid #e0e4eb;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.preview-aside {
+  padding: 12px 20px;
+  border-left: 4px solid #6085cc;
+  background: #f1f6ff;
+  border-radius: 6px;
+}
+.preview-aside-tip {
+  border-color: #3a9770;
+  background: #f0faf5;
+}
+.preview-aside-caution {
+  border-color: #ca942f;
+  background: #fffbef;
+}
+.preview-aside-danger {
+  border-color: #cd6464;
+  background: #fff2f2;
+}
+.preview-tabs [role='tablist'] {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  border-bottom: 1px solid #e0e4eb;
+}
+.preview-tabs button {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.preview-tabs button[aria-selected='true'] {
+  color: #3866c7;
+  border-bottom: 2px solid #3866c7;
+}
+.preview-tabs [role='tabpanel'] {
+  padding: 8px 0;
+}
+.preview-signature img {
+  width: 100%;
+}
+@media (max-width: 500px) {
+  body {
+    padding: 16px;
+  }
+  .preview-timeline li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+  .preview-date {
+    text-align: left;
+  }
+}

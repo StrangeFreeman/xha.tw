@@ -1,5 +1,6 @@
 ---
 import config from '@/site-config'
+import { isPreview } from '@/utils/preview'
 
 import '@waline/client/style'
 
@@ -9,7 +10,7 @@ const { class: className } = Astro.props
 ---
 
 {
-  config.integ.waline.enable && (
+  !isPreview && config.integ.waline.enable && (
     <comment-component>
       <div id='waline' class={cn('not-prose', className)}>
         Comment seems to stuck. Try to refresh?✨

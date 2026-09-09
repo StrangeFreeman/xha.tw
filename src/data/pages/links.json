@@ -1,24 +1,18 @@
 {
-  "key": "links",
-  "title": "Links",
   "navigationLabel": "Links",
-  "path": "/links",
-  "navigationOrder": 30,
   "enabled": true,
-  "showInNavigation": true,
+  "path": "/links",
   "view": false,
-  "comment": true,
-  "description": "友站與常用連結",
   "blocks": [
     {
-      "type": "rich-text",
-      "id": "links-introduction",
-      "title": "Links introduction",
-      "visible": true,
+      "buttonLabel": "",
       "showHeading": false,
       "showInToc": false,
+      "visible": true,
+      "title": "Links introduction",
       "content": "連結會以隨機順序顯示。",
-      "buttonLabel": "",
+      "type": "rich-text",
+      "id": "links-introduction",
       "buttonUrl": ""
     },
     {
@@ -74,5 +68,11 @@
       "content": "可透過頁面下方留言，或到 GitHub 提交 Pull Request 申請友鏈。\n\n- 已在你的網站加入本站連結\n- 網站可正常瀏覽，並具有正式網域\n- 至少有五篇原創文章，且最近一年仍有更新\n- 內容合法且不含惡意程式",
       "pullRequestUrl": "https://github.com/StrangeFreeman/xha.tw/pulls"
     }
-  ]
+  ],
+  "showInNavigation": true,
+  "title": "Links",
+  "navigationOrder": 30,
+  "description": "友站連結/友情鏈結，愛看 Ivonblog www",
+  "key": "links",
+  "comment": true
 }

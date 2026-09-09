@@ -1,14 +1,8 @@
 {
-  "key": "projects",
-  "title": "Projects",
   "navigationLabel": "Projects",
-  "path": "/projects",
-  "navigationOrder": 20,
   "enabled": true,
-  "showInNavigation": true,
+  "path": "/projects",
   "view": true,
-  "comment": false,
-  "description": "專案、學習紀錄與其他作品",
   "blocks": [
     {
       "type": "project-grid",
@@ -42,26 +36,32 @@
       ]
     },
     {
-      "type": "rich-text",
-      "id": "gpg-signature",
-      "title": "GPG Signature",
-      "visible": true,
+      "buttonLabel": "",
       "showHeading": true,
       "showInToc": true,
+      "visible": true,
+      "title": "GPG Signature",
       "content": "",
-      "buttonLabel": "",
+      "type": "rich-text",
+      "id": "gpg-signature",
       "buttonUrl": ""
     },
     {
-      "type": "rich-text",
-      "id": "sponsorship",
-      "title": "Sponsorship",
-      "visible": true,
+      "buttonLabel": "",
       "showHeading": true,
       "showInToc": true,
+      "visible": true,
+      "title": "Sponsorship",
       "content": "",
-      "buttonLabel": "",
+      "type": "rich-text",
+      "id": "sponsorship",
       "buttonUrl": ""
     }
-  ]
+  ],
+  "showInNavigation": true,
+  "title": "Projects",
+  "navigationOrder": 20,
+  "description": "專案、作品集",
+  "key": "projects",
+  "comment": false
 }

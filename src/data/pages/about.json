@@ -1,24 +1,27 @@
 {
-  "key": "about",
-  "title": "About",
   "navigationLabel": "About",
-  "path": "/about",
-  "navigationOrder": 40,
   "enabled": true,
-  "showInNavigation": true,
+  "path": "/about",
   "view": false,
-  "comment": true,
-  "description": "關於 xhA 與這個網站",
   "blocks": [
     {
       "type": "rich-text",
-      "id": "hobbies",
-      "title": "Hobbies",
       "visible": true,
+      "showHeading": false,
+      "showInToc": false,
+      "id": "more-about-me",
+      "content": "Developer / Explorer\n\nHi, I'm xhA ( xiao hong A / 小紅A )<br>Studying hard to find a job. Majoring in cybersecurity, tinkering with self-hosted services and homelabs. I enjoy taking on challenges, patiently exploring complex technologies, and especially love sharing what I learn along the way.\n\n\\-- 舞台這麼大，我想乘著夢想站上去看看",
+      "title": "more-about-me"
+    },
+    {
+      "buttonLabel": "",
       "showHeading": true,
       "showInToc": true,
+      "visible": true,
+      "title": "Hobbies",
       "content": "",
-      "buttonLabel": "",
+      "type": "rich-text",
+      "id": "hobbies",
       "buttonUrl": ""
     },
     {
@@ -32,14 +35,14 @@
       "groups": []
     },
     {
-      "type": "rich-text",
-      "id": "social-networks",
-      "title": "Social Networks",
-      "visible": true,
+      "buttonLabel": "",
       "showHeading": true,
       "showInToc": true,
+      "visible": true,
+      "title": "Social Networks",
       "content": "",
-      "buttonLabel": "",
+      "type": "rich-text",
+      "id": "social-networks",
       "buttonUrl": ""
     },
     {
@@ -49,34 +52,68 @@
       "visible": true,
       "showHeading": true,
       "showInToc": true,
-      "items": []
+      "items": [
+        {
+          "title": "why xhA ?",
+          "content": "Fate UBW 裡的 紅A 好帥，剛好 NISRA 進去要取外號，所以就用到現在了喔"
+        }
+      ]
     },
     {
-      "type": "timeline",
-      "id": "about-blog",
-      "title": "About Blog",
+      "type": "rich-text",
       "visible": true,
       "showHeading": true,
       "showInToc": true,
-      "description": "",
-      "events": []
+      "title": "About Blog",
+      "id": "about-blog",
+      "content": "這網站會放一點點 self-hosting、資安 或是其他(? 的分享和紀錄，如果剛好解惑或是激發您的靈感，我很高興把不同的可能性帶進你的生活。\n\n在 self-hosting 時我常常去看看別人的部落格，被這樣的氛圍吸引，在我的知識能夠慢慢撐起這樣的雄心壯志時，我開始想要培養屬於我自己的品味和素養，所以這個網站誕生了。"
     },
     {
-      "type": "signature",
-      "id": "signature",
-      "title": "Signature",
+      "type": "timeline",
+      "id": "about-blog-timeline",
+      "title": "about-blog-timeline",
       "visible": true,
       "showHeading": false,
       "showInToc": false,
-      "src": "/uploads/xha-signature.svg",
-      "alt": "xhA signature",
+      "description": "",
+      "events": [
+        {
+          "date": "2026.06.02",
+          "content": "日常被 crazyfire 學長推坑，計畫使用 Astro 框架架站"
+        },
+        {
+          "date": "2026.08.26",
+          "content": "成立此網站的 repo，並使用 codex 協助完善網站"
+        },
+        {
+          "date": "???",
+          "content": "未來精彩繼續"
+        }
+      ]
+    },
+    {
       "mode": "once-on-view",
+      "src": "/uploads/xha-signature.svg",
+      "showHeading": false,
       "align": "right",
+      "showInToc": false,
       "width": 220,
-      "drawDelay": 90,
-      "rollbackDelay": 80,
+      "alt": "xhA signature",
+      "visible": true,
       "loopPause": 2000,
-      "defaultDuration": 520
+      "defaultDuration": 520,
+      "title": "Signature",
+      "content": "這網站會放一點點 self-hosting、資安 或是其他(? 的分享和紀錄，如果剛好解惑或是激發您的靈感，我很高興把不同的可能性帶進你的生活。\n\n在 self-hosting 時我常常去看看別人的部落格，被這樣的氛圍吸引，在我的知識能夠慢慢撐起這樣的雄心壯志時，我開始想要培養屬於我自己的品味和素養，所以這個網站誕生了。",
+      "type": "signature",
+      "id": "signature",
+      "rollbackDelay": 80,
+      "drawDelay": 90
     }
-  ]
+  ],
+  "showInNavigation": true,
+  "title": "About",
+  "navigationOrder": 40,
+  "description": "關於 xhA 與這個網站",
+  "key": "about",
+  "comment": true
 }

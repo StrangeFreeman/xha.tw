@@ -51,7 +51,12 @@
       "visible": true,
       "showHeading": true,
       "showInToc": true,
-      "items": []
+      "items": [
+        {
+          "title": "why xhA ?",
+          "content": "Fate UBW 裡的 紅A 好帥，剛好 NISRA 進去要取外號，所以就用到現在了喔"
+        }
+      ]
     },
     {
       "type": "timeline",
@@ -61,7 +66,16 @@
       "showHeading": true,
       "showInToc": true,
       "description": "",
-      "events": []
+      "events": [
+        {
+          "date": "???",
+          "content": "日常被 crazyfire 學長推坑，計畫使用 Astro 框架架站"
+        },
+        {
+          "date": "2026.08.26",
+          "content": "成立此網站的 repo，並使用 codex 協助完善網站"
+        }
+      ]
     },
     {
       "mode": "once-on-view",

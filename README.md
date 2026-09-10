@@ -1,151 +1,88 @@
-# Astro Theme Pure
+# xha.tw
 
-English | [简体中文](./README-zh-CN.md)
+The source for [xhA's personal website](https://xha.tw): a place for notes on cybersecurity, self-hosting, homelabs, and things learned along the way.
 
-A simple, fast and powerful blog & document theme built by Astro.
+Maintained by [xhA / StrangeFreeman](https://github.com/StrangeFreeman). The site brings together a blog, project portfolio, friend links, and an About page, with a Git-backed editing and publishing workflow.
 
-[![GitHub deployments](https://img.shields.io/github/deployments/cworld1/astro-theme-pure/production?style=flat&logo=vercel&label=vercel)](https://astro-pure.js.org/)
-[![NPM Version](https://img.shields.io/npm/v/astro-pure?logo=npm&style=flat)](https://www.npmjs.com/package/astro-pure)
-[![GitHub Release](https://img.shields.io/github/v/release/cworld1/astro-theme-pure?include_prereleases&style=flat&label=template)](https://github.com/cworld1/astro-theme-pure/releases)
-[![GitHub License](https://img.shields.io/github/license/cworld1/astro-theme-pure?style=flat)](https://github.com/cworld1/astro-theme-pure/blob/main/LICENSE)
+[Website](https://xha.tw) · [Backup site](https://blog.xha.tw) · [RSS](https://xha.tw/rss.xml)
 
-![image](./.github/assets/header.webp)
-![image](./.github/assets/body.webp)
+## What is in this repository?
 
-> [!NOTE]
-> Known issues: Header & customize options is still under development (template exposed still).
-
-## Introduction
-
-Checkout [Demo Site →](https://astro-pure.js.org/)
-
-### :fire: Features
-
-- [x] :rocket: Fast & high performance
-- [x] :star: Simple & clean design
-- [x] :iphone: Responsive design
-- [x] :mag: Full-site search built with [pagefind](https://pagefind.app/)
-- [x] :world_map: Sitemap & RSS feed
-- [x] :spider_web: SEO-friendly
-- [x] :book: TOC (table of contents)
-- [x] :framed_picture: Dynamic open graph generation for posts
-- [x] :framed_picture: Mediumzoom lightbox for images
-
-### :package: Components
-
-Theme includes a lot of components, which can not only be used in the theme, but also in other astro projects.
-
-> For other astro projects, UnoCSS is required. See [Package README](https://github.com/cworld1/astro-theme-pure/blob/main/packages/pure/README.md#use-with-common-astro-project) for more details.
-
-- Basic components: `Aside`, `Tabs`, `Timeline`, `Steps`, `Spoiler`...
-- Advanced components: `GithubCard`, `LinkPreview`, `Quote`, `QRCode`...
-
-### :white_check_mark: Lighthouse score
-
-[![lighthouse-score](./.github/assets/lighthouse-score.png)](https://pagespeed.web.dev/analysis/https-cworld-top/o229zrt5o4?form_factor=mobile&hl=en)
-
-## Documentation
-
-[Docs](https://astro-pure.js.org/docs) | [Showcase](https://github.com/cworld1/astro-theme-pure/issues/10)
-
-## Package
-
-See [astro-theme-pure](https://www.npmjs.com/package/astro-pure) on npm.
+- Configurable pages and navigation, with reusable content blocks for Markdown, cards, tabs, steps, timelines, tools, projects, and friend links.
+- Blog and documentation content in Markdown/MDX, including CMS-editable embedded blocks.
+- Decap CMS with GitHub authentication, editorial drafts, and immediate editor previews.
+- Private draft websites on Cloudflare Pages, protected by Cloudflare Access and server-side identity verification.
+- A timeline that follows the editor's saved order, with new events inserted at the top, plus an animated SVG signature.
+- Search, tags, archives, RSS, a sitemap, and optional Waline comments and view counts.
+- Automated static deployment to the main VPS and a GitHub Pages backup, plus infrastructure configuration for the Shlink URL shortener.
 
 ## Local development
 
-### Environment requirements
+Use Bun and Node.js 22.12.0 or newer. Dependencies are pinned in `bun.lock`.
 
-> [!WARNING]
-> Astro 6.0+ requires Node.js 22.12.0 or newer. Odd-numbered Node.js versions such as 23 are not supported by Astro.
-
-You can choose one of the following methods for project development:
-
-- [Bun](https://bun.com/get)
-- [Node.js](https://nodejs.org/)
-
-
-For deployment methods using container like [Docker](https://docs.docker.com/get-started/get-docker) & [Docker Compose](https://docs.docker.com/compose/install), please refer the documention [Using Docker Compose](https://astro-pure.js.org/docs/setup/using-docker-compose).
-
-### Getting started
-
-1. Clone the repository and enter the directory:
-   ```shell
-   git clone https://github.com/cworld1/astro-theme-pure.git
-   cd astro-theme-pure
-   ```
-
-   Edit `src/site.config.ts` to customize the site.
-
-2. Install dependencies:
-   ```shell
-   bun install
-   ```
-   
-3. Start the development server:
-   ```shell
-   bun dev
-   # or
-   pnpm dev
-   # or
-   yarn run dev
-   # or
-   npm run dev
-   ```
-   
-   The development server runs at http://localhost:4321 by default.
-
-### Creating a new blog article
-
-After setting up either development environment, you can create a new blog article:
-
-```shell
-bun pure new
+```sh
+git clone https://github.com/StrangeFreeman/xha.tw.git
+cd xha.tw
+bun install --frozen-lockfile
+bun run dev
 ```
 
-## Deployment
+Open `http://localhost:4321`. Site identity is stored in `src/data/site.json`; page content and navigation live in `src/data/pages/`. Advanced site settings are in `src/site.config.ts`.
 
-### Manual deployment
+| Command                 | Purpose                                                                |
+| ----------------------- | ---------------------------------------------------------------------- |
+| `bun run dev`           | Start the local development server                                     |
+| `bun run check`         | Check Astro and TypeScript diagnostics                                 |
+| `bun run test:cms`      | Test CMS previews and preview access controls                          |
+| `bun run build`         | Check and build the production website into `dist/`                    |
+| `bun run preview`       | Serve the production build locally                                     |
+| `bun run build:preview` | Build drafts and prepare the protected Pages output in `dist-preview/` |
 
-Build the production site into the `./dist` directory:
+## Editing and publishing
 
-```shell
-bun run build
-```
-   
-Once the build is complete, the generated static files will be located in the `./dist` directory. You can deploy this directory to any platform that supports static site hosting.
-   
-Preview the production build locally:
+The CMS is available at [xha.tw/admin](https://xha.tw/admin/). It manages site settings, pages and navigation, blog posts, and documentation.
 
-```shell
-bun preview
-```
+1. Edit content and inspect the immediate preview in the editor.
+2. Save a draft to GitHub.
+3. Wait for the private preview build, then use **Check for Preview** to retrieve its link. This button checks deployment status; it does not start a build.
+4. Review the draft website after signing in through Cloudflare Access.
+5. Publish when ready. Changes merged into `main` trigger production deployment.
 
-### Static hosting platforms
+New timeline entries are added above existing entries. Dragging changes their saved display order; date labels are not automatically sorted.
 
-You can deploy your blog to any static site hosting platform.
+See [CMS.md](CMS.md) for the editor guide in Traditional Chinese and [DEPLOYMENT.md](DEPLOYMENT.md) for deployment and authentication setup.
 
-- Refer to the official [Astro Deployment Guide](https://docs.astro.build/en/guides/deploy/) for specific deployment methods.
-- Depending on the deployment platform you choose, you may need to modify the `astro.config.ts` configuration file in the project.
+## Repository layout
 
-| Vercel | Netlify |
-| :---: | :---: |
-| [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcworld1%2Fastro-theme-pure) | [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/cworld1/astro-theme-pure) |
+| Path                         | Contents                                                       |
+| ---------------------------- | -------------------------------------------------------------- |
+| `src/data/`                  | Site identity, page settings, and structured content           |
+| `src/content/`               | Blog and documentation entries                                 |
+| `src/components/`            | Site components and CMS content-block rendering                |
+| `src/layouts/`, `src/pages/` | Page layouts, routes, and feeds                                |
+| `public/admin/`              | Decap configuration, editor components, and immediate previews |
+| `public/uploads/`            | Media uploaded through the CMS                                 |
+| `auth-worker/`               | Cloudflare Worker for GitHub OAuth authentication              |
+| `preview/`                   | Private preview authentication, deployment, and cleanup        |
+| `tests/`                     | CMS and preview access-control tests                           |
+| `deploy/`                    | VPS configuration for Caddy, Shlink, and PostgreSQL            |
+| `.github/workflows/`         | Production and private-preview automation                      |
+| `packages/pure/`, `preset/`  | Retained upstream integration source and development resources |
 
-## Contributions
+## Hosting
 
-To spend more time coding and less time fiddling with whitespace, this project uses code conventions and styles to encourage consistency. Code with a consistent style is easier (and less error-prone!) to review, maintain, and understand.
+Production is built in GitHub Actions. The same static output is deployed independently to Caddy on the VPS at `xha.tw` and to GitHub Pages at `blog.xha.tw`. The VPS does not need to build or store a checkout of this repository.
 
-## Thanks
+Draft previews run on a separate Cloudflare Pages project. Custom, project, and per-deployment preview hostnames require Access authentication. The preview handler verifies the signed identity before serving pages or assets, and denies access when configuration or authentication is missing. Preview builds include drafts and disabled pages, and disable comments and view counting.
 
-- [Astro Cactus](https://github.com/chrismwilliams/astro-theme-cactus)
-- [Astro Resume](https://github.com/srleom/astro-theme-resume)
-- [Starlight](https://github.com/withastro/starlight)
+Access protects the hosted preview, not this repository's branches or Actions artifacts. Do not put secrets in content or committed files. Deployment credentials belong in GitHub environment secrets and Cloudflare runtime secrets. See [DEPLOYMENT.md](DEPLOYMENT.md) for the complete setup.
 
-Other third party references are on [Docs#Contributions](https://astro-pure.js.org/docs/advanced/about). Appreciate for all open source libraries.
+## Origin and acknowledgments
+
+This repository was originally cloned from [Astro Theme Pure](https://github.com/cworld1/astro-theme-pure), created by [cworld1](https://github.com/cworld1). Its original source and design provided the starting point for this website.
+
+Since then, the repository has been customized for xhA's content, identity, modular page editing, CMS workflow, private previews, and hosting infrastructure. Upstream components and the `astro-pure` integration remain part of the implementation. Credit and thanks go to the original author and contributors for that foundation.
 
 ## License
 
-This project is licensed under the Apache 2.0 License.
-
-[![Star History Chart](https://star-history.dera.page/svg?repos=cworld1/astro-theme-pure&type=Date)](https://star-history.dera.page/#cworld1/astro-theme-pure&Date)
+The repository retains the upstream [Apache License 2.0](LICENSE). Preserve applicable license and attribution notices when reusing its code. Third-party dependencies retain their respective licenses.

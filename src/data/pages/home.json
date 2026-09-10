@@ -1,45 +1,52 @@
 {
-  "key": "home",
-  "title": "Home",
   "navigationLabel": "Home",
-  "path": "/",
-  "navigationOrder": 0,
   "enabled": true,
-  "showInNavigation": false,
+  "path": "/",
   "view": false,
-  "comment": false,
-  "description": "xhA 的個人網站首頁",
   "blocks": [
     {
-      "type": "rich-text",
-      "id": "about",
-      "title": "About",
-      "visible": true,
+      "buttonLabel": "More about me",
       "showHeading": true,
       "showInToc": false,
+      "visible": true,
+      "title": "About",
       "content": "Developer / Explorer\n\nHi, I'm xhA ( xiao hong A / 小紅A )<br>Studying hard to find a job. Majoring in cybersecurity, tinkering with self-hosted services and homelabs. I enjoy taking on challenges, patiently exploring complex technologies, and especially love sharing what I learn along the way.",
-      "buttonLabel": "More about me",
+      "type": "rich-text",
+      "id": "about",
       "buttonUrl": "/about"
     },
     {
-      "type": "latest-posts",
-      "id": "posts",
-      "title": "Posts",
-      "visible": true,
+      "buttonLabel": "All posts",
       "showHeading": true,
       "showInToc": false,
+      "visible": true,
+      "title": "Posts",
+      "type": "latest-posts",
+      "id": "posts",
       "limit": 10,
-      "buttonLabel": "All posts",
       "buttonUrl": "/blog"
     },
     {
       "type": "card-list",
       "id": "education",
       "title": "Education",
-      "visible": false,
+      "visible": true,
       "showHeading": true,
       "showInToc": false,
-      "cards": []
+      "cards": [
+        {
+          "title": "台北市立松山高級中學",
+          "subtitle": "",
+          "href": "",
+          "date": "September 2020 - June 2023"
+        },
+        {
+          "title": "天主教輔仁大學",
+          "date": "September 2023 - Present",
+          "href": "https://www.fju.edu.tw/",
+          "subtitle": "人工智慧與資訊安全學士學位學程"
+        }
+      ]
     },
     {
       "type": "website-cards",
@@ -68,5 +75,11 @@
       "showInToc": false,
       "groups": []
     }
-  ]
+  ],
+  "showInNavigation": false,
+  "title": "Home",
+  "navigationOrder": 0,
+  "description": "xhA 的個人網站首頁",
+  "key": "home",
+  "comment": false
 }

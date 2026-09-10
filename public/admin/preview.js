@@ -167,16 +167,37 @@
       case 'buttons':
         return buttons(block.buttons)
       case 'card-list':
-        return cards(block.cards, (card) =>
-          h(
-            'div',
-            null,
-            h('h3', null, card.title),
-            text(card.subtitle),
-            text(card.date),
-            md(card.content),
-            card.href && link('Open', card.href)
-          )
+      case 'feature-cards':
+        return h(
+          'div',
+          { className: `resume-cards${block.layout === 'grid' ? ' resume-cards-grid' : ''}` },
+          list(block.cards).map((card, index) => {
+            const asset = card.logo && (context.getAsset ? context.getAsset(card.logo) : card.logo)
+            const logo = card.showLogo !== false && safeUrl(asset?.toString(), true)
+            return h(
+              'article',
+              { key: index, className: `resume-card${logo ? ' resume-card-with-logo' : ''}` },
+              logo &&
+                h('img', {
+                  className: 'resume-card-logo',
+                  src: logo,
+                  alt: '',
+                  'aria-hidden': true
+                }),
+              h(
+                'div',
+                { className: 'resume-card-copy' },
+                h(
+                  'h3',
+                  { className: 'resume-card-title' },
+                  card.href ? link(card.title, card.href) : card.title
+                ),
+                card.subtitle && h('p', { className: 'resume-card-subtitle' }, card.subtitle),
+                card.content && h('div', { className: 'resume-card-body' }, md(card.content)),
+                card.date && h('p', { className: 'resume-card-date' }, card.date)
+              )
+            )
+          })
         )
       case 'website-cards':
         return cards(block.cards, (card) =>
@@ -335,6 +356,7 @@
 
   window.XhaPreview = { block, timeline, safeUrl }
   cms.registerPreviewStyle('/admin/preview.css')
+  cms.registerPreviewStyle('/styles/resume-cards.css')
   // File names blog/docs also name folder collections; inspect entry data in the shared template.
   ;['site', 'home', 'blog', 'docs', 'projects', 'links', 'about'].forEach((name) =>
     cms.registerPreviewTemplate(name, (props) => h(EntryPreview, { ...props, previewName: name }))

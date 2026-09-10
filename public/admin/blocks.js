@@ -9,6 +9,46 @@
 
   const definitions = [
     {
+      id: 'cms-feature-cards',
+      label: '圖文卡片（Feature Cards）',
+      kind: 'feature-cards',
+      fields: [
+        {
+          label: '卡片排列',
+          name: 'layout',
+          widget: 'select',
+          default: 'stack',
+          options: [
+            { label: '直向寬卡片', value: 'stack' },
+            { label: '雙欄卡片', value: 'grid' }
+          ]
+        },
+        {
+          label: '卡片',
+          name: 'cards',
+          widget: 'list',
+          add_to_top: true,
+          summary: '{{fields.title}}',
+          hint: '新增卡片會放在最上方，可拖曳調整順序。',
+          fields: [
+            { label: '標題', name: 'title', widget: 'string' },
+            { label: '副標題', name: 'subtitle', widget: 'string', required: false },
+            { label: '日期或期間', name: 'date', widget: 'string', required: false },
+            { label: '網址', name: 'href', widget: 'string', required: false },
+            { label: '右側圖片或 Logo', name: 'logo', widget: 'image', required: false },
+            {
+              label: '顯示右側 Logo',
+              name: 'showLogo',
+              widget: 'boolean',
+              default: true,
+              required: false
+            },
+            { label: '內容', name: 'content', widget: 'markdown', required: false }
+          ]
+        }
+      ]
+    },
+    {
       id: 'cms-aside',
       label: 'Aside',
       kind: 'aside',

@@ -113,15 +113,24 @@ collections:
                 name: card-list
                 widget: object
                 summary: 'Card List · {{fields.title}}'
-                fields:
+                fields: &feature_card_fields
                   - *block_id
                   - *block_title
                   - *block_visible
                   - *block_heading
                   - *block_toc
+                  - label: 卡片排列
+                    name: layout
+                    widget: select
+                    default: stack
+                    options:
+                      - { label: 直向寬卡片, value: stack }
+                      - { label: 雙欄卡片, value: grid }
                   - label: Cards
                     name: cards
                     widget: list
+                    add_to_top: true
+                    hint: 新增卡片會放在最上方，可拖曳調整順序。
                     required: false
                     summary: '{{fields.title}}'
                     fields:
@@ -129,7 +138,27 @@ collections:
                       - { label: 副標題, name: subtitle, widget: string, required: false }
                       - { label: 日期或補充文字, name: date, widget: string, required: false }
                       - { label: 網址, name: href, widget: string, required: false }
+                      - {
+                          label: 右側圖片或 Logo,
+                          name: logo,
+                          widget: image,
+                          required: false,
+                          hint: '選填；圖片會以淡色浮水印顯示於卡片右側，建議使用透明背景。'
+                        }
+                      - {
+                          label: 顯示右側 Logo,
+                          name: showLogo,
+                          widget: boolean,
+                          default: true,
+                          required: false
+                        }
                       - { label: 內容, name: content, widget: markdown, required: false }
+              - &feature_cards
+                label: 圖文卡片（Feature Cards）
+                name: feature-cards
+                widget: object
+                summary: '圖文卡片（Feature Cards） · {{fields.title}}'
+                fields: *feature_card_fields
               - &collapse_list
                 label: Collapse
                 name: collapse-list
@@ -322,7 +351,26 @@ collections:
             *view,
             *comment,
             *description,
-            { label: Content Blocks, name: blocks, widget: hidden, default: [] }
+            {
+              label: Content Blocks,
+              name: blocks,
+              widget: list,
+              typeKey: type,
+              required: false,
+              default: [],
+              types:
+                [
+                  *rich_text,
+                  *feature_cards,
+                  *card_list,
+                  *collapse_list,
+                  *aside,
+                  *tabs,
+                  *steps,
+                  *timeline,
+                  *buttons
+                ]
+            }
           ]
       - name: docs
         preview_path: docs
@@ -341,7 +389,26 @@ collections:
             *view,
             *comment,
             *description,
-            { label: Content Blocks, name: blocks, widget: hidden, default: [] }
+            {
+              label: Content Blocks,
+              name: blocks,
+              widget: list,
+              typeKey: type,
+              required: false,
+              default: [],
+              types:
+                [
+                  *rich_text,
+                  *feature_cards,
+                  *card_list,
+                  *collapse_list,
+                  *aside,
+                  *tabs,
+                  *steps,
+                  *timeline,
+                  *buttons
+                ]
+            }
           ]
       - name: projects
         preview_path: projects
@@ -367,6 +434,7 @@ collections:
             types:
               - *rich_text
               - *card_list
+              - *feature_cards
               - *collapse_list
               - *aside
               - *tabs
@@ -446,6 +514,7 @@ collections:
               - *steps
               - *timeline
               - *buttons
+              - *feature_cards
               - label: Link Grid
                 name: link-grid
                 widget: object
@@ -545,6 +614,7 @@ collections:
             types:
               - *rich_text
               - *card_list
+              - *feature_cards
               - *collapse_list
               - *aside
               - *tabs

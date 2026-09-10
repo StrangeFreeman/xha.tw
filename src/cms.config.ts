@@ -53,7 +53,8 @@ const pageBlockSchema = z.discriminatedUnion('type', [
   }),
   z.object({
     ...blockBase,
-    type: z.literal('card-list'),
+    type: z.literal(['card-list', 'feature-cards']),
+    layout: z.enum(['stack', 'grid']).default('stack'),
     cards: z
       .array(
         z.object({
@@ -61,6 +62,11 @@ const pageBlockSchema = z.discriminatedUnion('type', [
           subtitle: z.string().max(160).default(''),
           date: z.string().max(80).default(''),
           href: z.string().default(''),
+          logo: z
+            .string()
+            .nullish()
+            .transform((value) => value ?? ''),
+          showLogo: z.boolean().default(true),
           content: z.string().default('')
         })
       )

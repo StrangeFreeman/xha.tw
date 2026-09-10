@@ -2,12 +2,13 @@
 import type { GetStaticPaths, Page } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 import { cmsPage } from '@/cms-config'
-import { isPreview } from '@/utils/preview'
 
 import { Paginator, PostPreview } from 'astro-pure/components/pages'
 import { Button, Icon } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
+import PageBlocks from '@/components/blocks/PageBlocks.astro'
 import { getBlogCollection, getUniqueTagsWithCount, sortMDByDate } from '@/utils/blog'
+import { isPreview } from '@/utils/preview'
 import config from '@/site-config'
 
 export const prerender = true
@@ -58,6 +59,7 @@ const paginationProps = {
     <div id='content-header' class='animate'>
       <h1 class='mb-6 mt-6 text-3xl font-medium sm:mt-10'>{cmsPage.blog.title}</h1>
     </div>
+    {page.currentPage === 1 && <PageBlocks blocks={cmsPage.blog.blocks} />}
     {
       page.data.length === 0 ? (
         <p>No posts yet.</p>

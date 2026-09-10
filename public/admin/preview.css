@@ -1,4 +1,8 @@
 :root {
+  --foreground: 225 15% 22%;
+  --muted-foreground: 220 14% 40%;
+  --border: 220 20% 86%;
+  --card: 220 20% 97%;
   color-scheme: light;
   font-family:
     system-ui,

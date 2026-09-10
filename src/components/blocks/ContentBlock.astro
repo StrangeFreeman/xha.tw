@@ -3,7 +3,7 @@ import type { CollectionEntry } from 'astro:content'
 import type { CmsBlock } from '@/cms-config'
 
 import { PostPreview } from 'astro-pure/components/pages'
-import { Aside, Button, Card, Collapse, Steps, TabItem, Tabs } from 'astro-pure/user'
+import { Aside, Button, Collapse, Steps, TabItem, Tabs } from 'astro-pure/user'
 import AboutTimeline from '@/components/about/AboutTimeline.astro'
 import Signature from '@/components/about/Signature.astro'
 import ToolSection from '@/components/about/ToolSection.astro'
@@ -11,6 +11,7 @@ import FriendList from '@/components/links/FriendList.astro'
 import ProjectSection from '@/components/projects/ProjectSection.astro'
 import config from '@/site-config'
 
+import FeatureCards from './FeatureCards.astro'
 import MarkdownContent from './MarkdownContent.astro'
 
 interface Props {
@@ -57,15 +58,8 @@ const shouldRender = block.visible && !(block.type === 'latest-posts' && posts.l
           </>
         )}
 
-        {block.type === 'card-list' && (
-          <div class='not-prose grid gap-3 sm:grid-cols-2'>
-            {block.cards.map((card) => (
-              <Card heading={card.title} subheading={card.subtitle} date={card.date}>
-                <MarkdownContent content={card.content} class='prose max-w-none' />
-                {card.href && <Button href={card.href} title='Open' variant='ahead' />}
-              </Card>
-            ))}
-          </div>
+        {(block.type === 'card-list' || block.type === 'feature-cards') && (
+          <FeatureCards cards={block.cards} layout={block.layout} />
         )}
 
         {block.type === 'collapse-list' && (

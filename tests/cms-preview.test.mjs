@@ -114,3 +114,34 @@ test('preview links reject executable URLs and cleanup only accepts numeric PR i
   assert.equal(previewBranch('123'), 'cms-pr-123')
   for (const value of ['../main', '0', '', '1;rm']) assert.throws(() => previewBranch(value))
 })
+
+test('feature cards round-trip and preserve order while hiding disabled or unsafe logos', () => {
+  const component = components.get('cms-feature-cards')
+  const data = {
+    layout: 'stack',
+    cards: [
+      { title: 'Newest', logo: '/logo.png', showLogo: true },
+      { title: 'Hidden logo', logo: '/hidden.png', showLogo: false },
+      { title: 'Unsafe logo', logo: 'javascript:alert(1)' },
+      { title: 'Oldest' }
+    ]
+  }
+  const source = component.toBlock(data)
+  assert.equal(
+    JSON.stringify(component.fromBlock(source.match(component.pattern))),
+    JSON.stringify(data)
+  )
+  const tree = component.toPreview(data)
+  const flatten = (node) =>
+    typeof node === 'object' && node ? [node, ...(node.children || []).flatMap(flatten)] : []
+  const nodes = flatten(tree)
+  assert.deepEqual(
+    nodes.filter((n) => n.type === 'h3').map(content),
+    data.cards.map((c) => c.title)
+  )
+  assert.deepEqual(
+    nodes.filter((n) => n.type === 'img').map((n) => n.props.src),
+    ['/logo.png']
+  )
+  assert.equal(component.fields.find((f) => f.name === 'cards').add_to_top, true)
+})

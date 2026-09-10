@@ -27,7 +27,7 @@
       "buttonUrl": "/blog"
     },
     {
-      "type": "card-list",
+      "type": "feature-cards",
       "id": "education",
       "title": "Education",
       "visible": true,
@@ -46,7 +46,8 @@
           "href": "https://www.fju.edu.tw/",
           "subtitle": "人工智慧與資訊安全學士學位學程"
         }
-      ]
+      ],
+      "layout": "stack"
     },
     {
       "type": "website-cards",
@@ -58,13 +59,14 @@
       "cards": []
     },
     {
-      "type": "card-list",
+      "type": "feature-cards",
       "id": "certifications",
       "title": "Certifications",
       "visible": false,
       "showHeading": true,
       "showInToc": false,
-      "cards": []
+      "cards": [],
+      "layout": "stack"
     },
     {
       "type": "skill-groups",

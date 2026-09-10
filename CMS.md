@@ -16,11 +16,11 @@
 CMS 頂層只有四組：
 
 - 網站設定：站名、作者、位置、GitHub、原始碼連結與頭像。
-- 頁面與導覽：首頁、Blog、Docs、Projects、Links、About 的頁面設定，以及四個主要頁面的 Content Blocks。
+- 頁面與導覽：首頁、Blog、Docs、Projects、Links、About 的頁面設定，以及所有主要頁面的 Content Blocks。
 - Blog：新增與編輯文章。
 - Docs：新增與編輯文件；頁面及導覽預設關閉。
 
-首頁、About、Projects、Links 都採用相同的 `Content Blocks` 編輯方式：
+首頁、Blog、Docs、About、Projects、Links 都採用相同的 `Content Blocks` 編輯方式：
 
 1. 在同一份頁面中新增區塊。
 2. 選擇區塊類型。
@@ -36,6 +36,7 @@ CMS 頂層只有四組：
 
 - Rich Text：一般 Markdown 內容，可選擇附加按鈕。
 - Card List：有外框的內容卡片。
+- 圖文卡片（Feature Cards）：可自由命名的通用圖文區塊，可從 Content Blocks 直接新增；填寫區塊標題即可用於學歷、證照或獲獎紀錄。預設為直向寬卡片，每張卡片可選填「右側圖片或 Logo」，並以「顯示右側 Logo」切換淡色浮水印；未上傳圖片時顯示純文字。新增卡片會放在最上方，仍可拖曳調整順序，不會依日期文字自動排序。「卡片排列」可切回雙欄。原本的 Card List 也支援相同設定。
 - Collapse：可展開或收合的補充內容。
 - Aside：note、tip、caution、danger 提示框。
 - Tabs：多個可切換的分頁內容。
@@ -87,3 +88,5 @@ Timeline 的「Add 時間點」會把新項目插入最上方，也就是 `???�
 ## 在本機修改內容
 
 頁面內容位於 `src/data/pages/*.json`，Blog 與 Docs 位於 `src/content/`。本機提交並推送到 `main` 後，部署流程與 CMS 發布相同。若 CMS 和本機同時修改同一檔案，請先同步最新的 `main`，避免合併衝突。
+
+圖文卡片也可在 Blog 與 Docs 的內文編輯器插入。Blog 列表頁的區塊僅顯示於第一頁。

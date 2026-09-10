@@ -1,0 +1,57 @@
+---
+import type { CmsBlock } from '@/cms-config'
+
+import MarkdownContent from './MarkdownContent.astro'
+
+import '../../../public/styles/resume-cards.css'
+
+type CardList = Extract<CmsBlock, { type: 'card-list' | 'feature-cards' }>
+interface Props {
+  cards: CardList['cards']
+  layout?: CardList['layout']
+}
+const { cards, layout = 'stack' } = Astro.props
+const safeUrl = (value: string) =>
+  /^(https?:\/\/|\/(?![\/\\])|#)/i.test(value) && !/[\u0000-\u0020\\]/.test(value)
+---
+
+<div class:list={['resume-cards not-prose', layout === 'grid' && 'resume-cards-grid']}>
+  {
+    cards.map((card) => {
+      const logo =
+        card.showLogo !== false && card.logo && safeUrl(card.logo) ? card.logo : undefined
+      const href = card.href && safeUrl(card.href) ? card.href : undefined
+      return (
+        <article class:list={['resume-card', logo && 'resume-card-with-logo']}>
+          {logo && (
+            <img
+              class='resume-card-logo'
+              src={logo}
+              alt=''
+              aria-hidden='true'
+              loading='lazy'
+              decoding='async'
+            />
+          )}
+          <div class='resume-card-copy'>
+            <h3 class='resume-card-title'>
+              {href ? (
+                <a href={href} target='_blank' rel='noopener noreferrer'>
+                  {card.title}
+                  <span aria-hidden='true' class='resume-card-arrow'>
+                    ↗
+                  </span>
+                </a>
+              ) : (
+                card.title
+              )}
+            </h3>
+            {card.subtitle && <p class='resume-card-subtitle'>{card.subtitle}</p>}
+            {card.content && <MarkdownContent content={card.content} class='resume-card-body' />}
+            {card.date && <p class='resume-card-date'>{card.date}</p>}
+          </div>
+        </article>
+      )
+    })
+  }
+</div>

@@ -55,10 +55,23 @@
       "type": "feature-cards",
       "id": "certifications",
       "title": "Certifications",
-      "visible": false,
+      "visible": true,
       "showHeading": true,
       "showInToc": false,
-      "cards": [],
+      "cards": [
+        {
+          "showLogo": true,
+          "title": "IPAS 資訊安全工程師 初級",
+          "href": "https://ipd.nat.gov.tw/ipas/certification/ISE/news",
+          "logo": "https://www.ipas.org.tw/images/logo.webp"
+        },
+        {
+          "showLogo": true,
+          "title": "IPAS AI 應用規劃師 初級",
+          "logo": "https://www.ipas.org.tw/images/logo.webp",
+          "href": "https://ipd.nat.gov.tw/ipas/certification/AIAP/news"
+        }
+      ],
       "layout": "stack"
     },
     {

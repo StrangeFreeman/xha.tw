@@ -75,6 +75,25 @@
       "layout": "stack"
     },
     {
+      "type": "feature-cards",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": false,
+      "layout": "stack",
+      "id": "community",
+      "title": "Community",
+      "cards": [
+        {
+          "showLogo": true,
+          "title": "輔大資訊安全研究會（NISRA）",
+          "subtitle": "會長",
+          "href": "https://www.nisra.net/",
+          "date": "October 2025 - November 2026",
+          "logo": ""
+        }
+      ]
+    },
+    {
       "type": "website-cards",
       "id": "website-list",
       "title": "Website List",

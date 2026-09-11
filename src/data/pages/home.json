@@ -51,28 +51,12 @@
     },
     {
       "type": "feature-cards",
-      "id": "education",
-      "title": "Education",
       "visible": true,
       "showHeading": true,
       "showInToc": false,
-      "cards": [
-        {
-          "title": "天主教輔仁大學",
-          "date": "September 2023 - Present",
-          "href": "https://www.fju.edu.tw/",
-          "subtitle": "人工智慧與資訊安全學士學位學程",
-          "logo": "https://upload.wikimedia.org/wikipedia/zh/0/07/Fu_Jen_Catholic_University_Seal_%28Since_1971%29.svg"
-        },
-        {
-          "title": "台北市立松山高級中學",
-          "subtitle": "",
-          "href": "https://www.sssh.tp.edu.tw",
-          "date": "September 2020 - June 2023",
-          "logo": "https://www.sssh.tp.edu.tw/uploads/1757770299943DfTbeLMX.png"
-        }
-      ],
-      "layout": "stack"
+      "layout": "stack",
+      "id": "work-experience",
+      "title": "Work Experience"
     },
     {
       "type": "feature-cards",
@@ -108,6 +92,31 @@
           "logo": "https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-1/241496799_1390495321345963_3509512897365381558_n.png?stp=dst-png&cstp=mx500x500&ctp=s480x480&_nc_cat=107&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=UBJxnmMhpYcQ7kNvwHy6pxy&_nc_oc=AdqWKZie3cQg2txqnG1IXa6slvgR4nuYuj2wxYynuNLV9JFaDE288BlRj83dZWv82gI&_nc_zt=24&_nc_ht=scontent.ftpe7-4.fna&_nc_gid=H1MtqlpihTPD2E7Pr2g1Hg&_nc_ss=7a289&oh=00_AQJz79vqquUEPvVpTn4sU5dAqti9_PmeDJ0KUBIi660RuA&oe=6AA93AB6"
         }
       ]
+    },
+    {
+      "type": "feature-cards",
+      "id": "education",
+      "title": "Education",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": false,
+      "cards": [
+        {
+          "title": "天主教輔仁大學",
+          "date": "September 2023 - Present",
+          "href": "https://www.fju.edu.tw/",
+          "subtitle": "人工智慧與資訊安全學士學位學程",
+          "logo": "https://upload.wikimedia.org/wikipedia/zh/0/07/Fu_Jen_Catholic_University_Seal_%28Since_1971%29.svg"
+        },
+        {
+          "title": "台北市立松山高級中學",
+          "subtitle": "",
+          "href": "https://www.sssh.tp.edu.tw",
+          "date": "September 2020 - June 2023",
+          "logo": "https://www.sssh.tp.edu.tw/uploads/1757770299943DfTbeLMX.png"
+        }
+      ],
+      "layout": "stack"
     },
     {
       "type": "website-cards",

@@ -56,7 +56,17 @@
       "showInToc": false,
       "layout": "stack",
       "id": "work-experience",
-      "title": "Work Experience"
+      "title": "Work Experience",
+      "cards": [
+        {
+          "showLogo": true,
+          "title": "財團法人資訊工業策進會",
+          "subtitle": "iSTAR 星耀暑期實習計畫 實習生",
+          "date": "July 2026 - September 2026",
+          "href": "https://www.iii.org.tw/",
+          "logo": "https://www.iii.org.tw/logo/logo_iii_dark.svg"
+        }
+      ]
     },
     {
       "type": "feature-cards",

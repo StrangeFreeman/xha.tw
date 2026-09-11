@@ -86,10 +86,26 @@
         {
           "showLogo": true,
           "title": "輔大資訊安全研究會（NISRA）",
+          "subtitle": "講師",
+          "date": "August 2024 - Present",
+          "href": "https://www.nisra.net/",
+          "logo": "https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-1/241496799_1390495321345963_3509512897365381558_n.png?stp=dst-png&cstp=mx500x500&ctp=s480x480&_nc_cat=107&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=UBJxnmMhpYcQ7kNvwHy6pxy&_nc_oc=AdqWKZie3cQg2txqnG1IXa6slvgR4nuYuj2wxYynuNLV9JFaDE288BlRj83dZWv82gI&_nc_zt=24&_nc_ht=scontent.ftpe7-4.fna&_nc_gid=H1MtqlpihTPD2E7Pr2g1Hg&_nc_ss=7a289&oh=00_AQJz79vqquUEPvVpTn4sU5dAqti9_PmeDJ0KUBIi660RuA&oe=6AA93AB6"
+        },
+        {
+          "showLogo": true,
+          "title": "輔大資訊安全研究會（NISRA）",
+          "subtitle": "網管",
+          "date": "June 2025 - Present",
+          "href": "https://www.nisra.net/",
+          "logo": "https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-1/241496799_1390495321345963_3509512897365381558_n.png?stp=dst-png&cstp=mx500x500&ctp=s480x480&_nc_cat=107&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=UBJxnmMhpYcQ7kNvwHy6pxy&_nc_oc=AdqWKZie3cQg2txqnG1IXa6slvgR4nuYuj2wxYynuNLV9JFaDE288BlRj83dZWv82gI&_nc_zt=24&_nc_ht=scontent.ftpe7-4.fna&_nc_gid=H1MtqlpihTPD2E7Pr2g1Hg&_nc_ss=7a289&oh=00_AQJz79vqquUEPvVpTn4sU5dAqti9_PmeDJ0KUBIi660RuA&oe=6AA93AB6"
+        },
+        {
+          "showLogo": true,
+          "title": "輔大資訊安全研究會（NISRA）",
           "subtitle": "會長",
           "href": "https://www.nisra.net/",
           "date": "October 2025 - November 2026",
-          "logo": ""
+          "logo": "https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-1/241496799_1390495321345963_3509512897365381558_n.png?stp=dst-png&cstp=mx500x500&ctp=s480x480&_nc_cat=107&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=UBJxnmMhpYcQ7kNvwHy6pxy&_nc_oc=AdqWKZie3cQg2txqnG1IXa6slvgR4nuYuj2wxYynuNLV9JFaDE288BlRj83dZWv82gI&_nc_zt=24&_nc_ht=scontent.ftpe7-4.fna&_nc_gid=H1MtqlpihTPD2E7Pr2g1Hg&_nc_ss=7a289&oh=00_AQJz79vqquUEPvVpTn4sU5dAqti9_PmeDJ0KUBIi660RuA&oe=6AA93AB6"
         }
       ]
     },

@@ -60,11 +60,19 @@
       "cards": [
         {
           "showLogo": true,
-          "title": "財團法人資訊工業策進會",
-          "subtitle": "iSTAR 星耀暑期實習計畫 實習生",
+          "title": "iSTAR 星耀暑期實習計畫 實習生",
+          "subtitle": "財團法人資訊工業策進會",
           "date": "July 2026 - September 2026",
           "href": "https://www.iii.org.tw/",
           "logo": "https://www.iii.org.tw/logo/logo_iii_dark.svg"
+        },
+        {
+          "showLogo": true,
+          "title": "CTF 課程助教",
+          "subtitle": "輔仁大學智慧資安學程",
+          "date": "March 2026 - May 2026",
+          "href": "https://ais.fju.edu.tw/",
+          "logo": "https://explorelink.fju.edu.tw/ais/api/images/d79215df38268c01071edee47c8bc4fcacd1c716c80eecfaa6ed8a9d0ca9399406bba2b885984379ed7b0dfc14f9532364c07f0e1cb4475192b9d8bbaf9459a7"
         }
       ]
     },

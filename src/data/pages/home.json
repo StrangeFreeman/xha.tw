@@ -28,6 +28,91 @@
     },
     {
       "type": "feature-cards",
+      "id": "certifications",
+      "title": "Certifications",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": false,
+      "cards": [
+        {
+          "showLogo": true,
+          "title": "IPAS 資訊安全工程師 初級",
+          "href": "https://ipd.nat.gov.tw/ipas/certification/ISE/news",
+          "logo": "https://www.ipas.org.tw/images/logo.webp"
+        },
+        {
+          "showLogo": true,
+          "title": "IPAS AI 應用規劃師 初級",
+          "logo": "https://www.ipas.org.tw/images/logo.webp",
+          "href": "https://ipd.nat.gov.tw/ipas/certification/AIAP/news"
+        }
+      ],
+      "layout": "stack"
+    },
+    {
+      "type": "feature-cards",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": false,
+      "layout": "stack",
+      "id": "work-experience",
+      "title": "Work Experience",
+      "cards": [
+        {
+          "showLogo": true,
+          "title": "iSTAR 星耀暑期實習計畫 實習生",
+          "subtitle": "財團法人資訊工業策進會",
+          "date": "July 2026 - September 2026",
+          "href": "https://www.iii.org.tw/",
+          "logo": "https://www.iii.org.tw/logo/logo_iii_dark.svg"
+        },
+        {
+          "showLogo": true,
+          "title": "CTF 課程助教",
+          "subtitle": "輔仁大學智慧資安學程",
+          "date": "March 2026 - May 2026",
+          "href": "https://ais.fju.edu.tw/",
+          "logo": "https://explorelink.fju.edu.tw/ais/api/images/d79215df38268c01071edee47c8bc4fcacd1c716c80eecfaa6ed8a9d0ca9399406bba2b885984379ed7b0dfc14f9532364c07f0e1cb4475192b9d8bbaf9459a7"
+        }
+      ]
+    },
+    {
+      "type": "feature-cards",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": false,
+      "layout": "stack",
+      "id": "community",
+      "title": "Community",
+      "cards": [
+        {
+          "showLogo": true,
+          "title": "輔大資訊安全研究會（NISRA）",
+          "subtitle": "講師",
+          "date": "August 2024 - Present",
+          "href": "https://www.nisra.net/",
+          "logo": "https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-1/241496799_1390495321345963_3509512897365381558_n.png?stp=dst-png&cstp=mx500x500&ctp=s480x480&_nc_cat=107&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=UBJxnmMhpYcQ7kNvwHy6pxy&_nc_oc=AdqWKZie3cQg2txqnG1IXa6slvgR4nuYuj2wxYynuNLV9JFaDE288BlRj83dZWv82gI&_nc_zt=24&_nc_ht=scontent.ftpe7-4.fna&_nc_gid=H1MtqlpihTPD2E7Pr2g1Hg&_nc_ss=7a289&oh=00_AQJz79vqquUEPvVpTn4sU5dAqti9_PmeDJ0KUBIi660RuA&oe=6AA93AB6"
+        },
+        {
+          "showLogo": true,
+          "title": "輔大資訊安全研究會（NISRA）",
+          "subtitle": "網管",
+          "date": "June 2025 - Present",
+          "href": "https://www.nisra.net/",
+          "logo": "https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-1/241496799_1390495321345963_3509512897365381558_n.png?stp=dst-png&cstp=mx500x500&ctp=s480x480&_nc_cat=107&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=UBJxnmMhpYcQ7kNvwHy6pxy&_nc_oc=AdqWKZie3cQg2txqnG1IXa6slvgR4nuYuj2wxYynuNLV9JFaDE288BlRj83dZWv82gI&_nc_zt=24&_nc_ht=scontent.ftpe7-4.fna&_nc_gid=H1MtqlpihTPD2E7Pr2g1Hg&_nc_ss=7a289&oh=00_AQJz79vqquUEPvVpTn4sU5dAqti9_PmeDJ0KUBIi660RuA&oe=6AA93AB6"
+        },
+        {
+          "showLogo": true,
+          "title": "輔大資訊安全研究會（NISRA）",
+          "subtitle": "會長",
+          "href": "https://www.nisra.net/",
+          "date": "October 2025 - November 2026",
+          "logo": "https://scontent.ftpe7-4.fna.fbcdn.net/v/t39.30808-1/241496799_1390495321345963_3509512897365381558_n.png?stp=dst-png&cstp=mx500x500&ctp=s480x480&_nc_cat=107&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=UBJxnmMhpYcQ7kNvwHy6pxy&_nc_oc=AdqWKZie3cQg2txqnG1IXa6slvgR4nuYuj2wxYynuNLV9JFaDE288BlRj83dZWv82gI&_nc_zt=24&_nc_ht=scontent.ftpe7-4.fna&_nc_gid=H1MtqlpihTPD2E7Pr2g1Hg&_nc_ss=7a289&oh=00_AQJz79vqquUEPvVpTn4sU5dAqti9_PmeDJ0KUBIi660RuA&oe=6AA93AB6"
+        }
+      ]
+    },
+    {
+      "type": "feature-cards",
       "id": "education",
       "title": "Education",
       "visible": true,
@@ -49,16 +134,6 @@
           "logo": "https://www.sssh.tp.edu.tw/uploads/1757770299943DfTbeLMX.png"
         }
       ],
-      "layout": "stack"
-    },
-    {
-      "type": "feature-cards",
-      "id": "certifications",
-      "title": "Certifications",
-      "visible": false,
-      "showHeading": true,
-      "showInToc": false,
-      "cards": [],
       "layout": "stack"
     },
     {

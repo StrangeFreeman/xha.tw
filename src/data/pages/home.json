@@ -28,6 +28,29 @@
     },
     {
       "type": "feature-cards",
+      "id": "certifications",
+      "title": "Certifications",
+      "visible": true,
+      "showHeading": true,
+      "showInToc": false,
+      "cards": [
+        {
+          "showLogo": true,
+          "title": "IPAS 資訊安全工程師 初級",
+          "href": "https://ipd.nat.gov.tw/ipas/certification/ISE/news",
+          "logo": "https://www.ipas.org.tw/images/logo.webp"
+        },
+        {
+          "showLogo": true,
+          "title": "IPAS AI 應用規劃師 初級",
+          "logo": "https://www.ipas.org.tw/images/logo.webp",
+          "href": "https://ipd.nat.gov.tw/ipas/certification/AIAP/news"
+        }
+      ],
+      "layout": "stack"
+    },
+    {
+      "type": "feature-cards",
       "id": "education",
       "title": "Education",
       "visible": true,
@@ -47,29 +70,6 @@
           "href": "https://www.sssh.tp.edu.tw",
           "date": "September 2020 - June 2023",
           "logo": "https://www.sssh.tp.edu.tw/uploads/1757770299943DfTbeLMX.png"
-        }
-      ],
-      "layout": "stack"
-    },
-    {
-      "type": "feature-cards",
-      "id": "certifications",
-      "title": "Certifications",
-      "visible": true,
-      "showHeading": true,
-      "showInToc": false,
-      "cards": [
-        {
-          "showLogo": true,
-          "title": "IPAS 資訊安全工程師 初級",
-          "href": "https://ipd.nat.gov.tw/ipas/certification/ISE/news",
-          "logo": "https://www.ipas.org.tw/images/logo.webp"
-        },
-        {
-          "showLogo": true,
-          "title": "IPAS AI 應用規劃師 初級",
-          "logo": "https://www.ipas.org.tw/images/logo.webp",
-          "href": "https://ipd.nat.gov.tw/ipas/certification/AIAP/news"
         }
       ],
       "layout": "stack"

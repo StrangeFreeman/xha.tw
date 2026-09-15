@@ -56,7 +56,7 @@
       "showInToc": false,
       "layout": "stack",
       "id": "work-experience",
-      "title": "Work Experience",
+      "title": "Work History",
       "cards": [
         {
           "showLogo": true,
@@ -68,7 +68,7 @@
         },
         {
           "showLogo": true,
-          "title": "CTF 課程助教",
+          "title": "CTF 課程 助教",
           "subtitle": "輔仁大學智慧資安學程",
           "date": "March 2026 - May 2026",
           "href": "https://ais.fju.edu.tw/",
